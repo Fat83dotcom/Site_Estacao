@@ -1,4 +1,9 @@
 # Byte-compiled / optimized / DLL files
+
+SiteEstacao/settings.py
+
+
+
 __pycache__/
 *.py[cod]
 *$py.class
