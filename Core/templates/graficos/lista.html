@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th colspan="5" class="text-center">Dados Diarios</th>
+        </tr>
+        <tbody>
+            <tr class="table-dark">
+                <td>Dia</td>
+                <td>Média Umidade</td>
+                <td>Média Pressao</td>
+                <td>Média Temp Interna</td>
+                <td>Média Temp Externa</td>
+            </tr>
+            {% for data in dado %}
+                <tr>
+                    <td>{{data.dia}}</td>
+                    <td>{{data.media_umidade}}</td>
+                    <td>{{data.media_pressao}}</td>
+                    <td>{{data.media_temp_int}}</td>
+                    <td>{{data.media_temp_ext}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </thead>    
+</table>
+{% endblock content %}
