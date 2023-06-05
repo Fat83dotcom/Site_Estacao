@@ -38,9 +38,15 @@ def registros(request):
     query, data = queryDateYesterday()
     dateToday = DadoDiario.objects.raw(query, data)
     context = {
-        'dado': dado
+        'dateToday': dateToday,
     }
-    return render(request, 'graficos/lista.html', context)
+    for i in dateToday:
+        print(i)
+    return render(request, 'registros/menuRegistros.html', context)
+
+
+def graficos(request):
+    return render(request, 'registros/graficos/grafico.html')
 
 
 def sobre(request):
