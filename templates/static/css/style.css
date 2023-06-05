@@ -20,17 +20,68 @@ nav a{
     align-items: center;
     justify-content: space-around;
     width: 100%;
-    background-color: var(--cor-header);
+    height: 80px;
+    background-color: var(--bg-header-color);
+    box-shadow:0px 3px 8px rgba(0, 0, 0, 0.5);
+}
+.icon-sun-hover :hover{
+    transition: var(--transition-icons);
+    color: var(--hover-color);
+    cursor: pointer;
+}
+.header-list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .header-list a{
-    color: var(--cor-icones);
+    color: var(--icon-color);
     text-decoration: none;
-    margin: 10px;
+}
+.header-list a :hover{
+    transition: var(--transition-icons);
+    color: var(--hover-color);
+    cursor: pointer;
 }
 .header-list ul{ 
     list-style: none;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+.wrapper{
+    display: flex;
+    flex-wrap: wrap;
+}
+#page-content-wrapper{
+    width: 75%;
+    height: 100%;
+    position: relative;
+    left: 30px;
+}
+#sidebar-wrapper{
+    width: 25%;
+    background-color: gainsboro;
+    height: 100%;
+}
+.sidebar-nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.sidebar-nav a{
+    text-decoration: none;
+    color: var(--icon-color);
+}
+.sidebar-nav :hover{
+    transition: var(--transition-icons);
+    color: var(--hover-color);
+    cursor: pointer;
+}
+.sidebar-nav li{
+    list-style: none;
 }
