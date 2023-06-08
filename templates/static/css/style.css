@@ -74,12 +74,22 @@ nav a{
 .sidebar-nav a{
     text-decoration: none;
     color: var(--icon-color);
+    transition: all 500ms ease-in-out;
 }
 .sidebar-nav :hover{
-    transition: var(--transition-icons);
     color: var(--hover-color);
     cursor: pointer;
 }
 .sidebar-nav li{
     list-style: none;
+}
+.conteiner-index{
+    background-color: aquamarine;
+    box-shadow: 2px 2px 2px rgba(31, 81, 65, 0.8);
+    border-radius: 10px;
+    transition: all 500ms ease-in-out;
+}
+.row div:hover{
+    box-shadow: -2px -2px 2px rgba(31, 81, 65, 0.8);
+    transform: scale(1.05);
 }
