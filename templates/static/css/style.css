@@ -24,11 +24,6 @@ nav a{
     background-color: var(--bg-header-color);
     box-shadow:0px 3px 8px rgba(0, 0, 0, 0.5);
 }
-.icon-sun-hover :hover{
-    transition: var(--transition-icons);
-    color: var(--hover-color);
-    cursor: pointer;
-}
 .header-list{
     display: flex;
     justify-content: center;
@@ -37,10 +32,13 @@ nav a{
 .header-list a{
     color: var(--icon-color);
     text-decoration: none;
+    transition: all 500ms ease-in-out;
 }
-.header-list a :hover{
-    transition: var(--transition-icons);
-    color: var(--hover-color);
+.header-list a:hover{
+    color: var(--transition-icons);
+    background-color: aquamarine;
+    border-radius: 10px;
+    padding: 5px;
     cursor: pointer;
 }
 .header-list ul{ 
