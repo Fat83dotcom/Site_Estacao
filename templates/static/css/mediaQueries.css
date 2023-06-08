@@ -1,0 +1,18 @@
+@media (max-width: 700px){
+    .wrapper{
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+    #page-content-wrapper{
+        width: 100%;
+        height: 100%;
+        position: static;
+        left: 30px;
+    }
+    #sidebar-wrapper{
+        width: 100%;
+        height: 100%;
+        background-color: gainsboro;
+    }
+}
