@@ -8,12 +8,28 @@ urlpatterns = [
     path(
         'registros/tabela/medias',
         views.PagesTableMeanView.as_view(),
-        name='tabelamedias'
+        name='tabelamedia'
     ),
-    # path(),
-    # path(),
-    # path(),
-    # path(),
+    path(
+        'registro/tabela/minimos',
+        views.PagesTablesMinView.as_view(),
+        name='tabelamin'
+    ),
+    path(
+        'registro/tabela/maximos',
+        views.PagesTablesMaxView.as_view(),
+        name='tabelamax'
+    ),
+    path(
+        'registros/tabela/medianas',
+        views.PagesTablesMedianView.as_view(),
+        name='tabelamediana'
+    ),
+    path(
+        'registros/tabela/modas',
+        views.PagesTablesModeView.as_view(),
+        name='tabelamoda'
+    ),
     path(
         'registros/graficos',
         views.PageMainGraphs.as_view(),
