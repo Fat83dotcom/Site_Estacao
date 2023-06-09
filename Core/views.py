@@ -49,12 +49,13 @@ class Queries:
         return (sql, data)
 
 
-class PagesTableMeanView(View):
+class PagesTableMeanView(View, Queries):
     template_name = 'registros/tabela/meantable.html'
 
     def get(self, request):
-        data = DadoDiario.objects.order_by('-dia')
-        paginator = Paginator(data, 10)
+        sql, data = self.queryMeanData()
+        result = DadoDiario.objects.raw(sql, data)
+        paginator = Paginator(result, 30)
         pageNumber = request.GET.get("page")
         pageObj = paginator.get_page(pageNumber)
         context = {
@@ -63,28 +64,64 @@ class PagesTableMeanView(View):
         return render(request, self.template_name, context)
 
 
-class PagesTablesMaxView(View):
+class PagesTablesMaxView(View, Queries):
+    template_name = 'registros/tabela/maxtable.html'
 
-    def tableMax(self, request):
-        pass
-
-
-class PagesTablesMinView(View):
-
-    def tableMin(self, request):
-        pass
-
-
-class PagesTablesMedianView(View):
-
-    def tableMedian(self, request):
-        pass
+    def get(self, request):
+        sql, data = self.queryMaxData()
+        result = DadoDiario.objects.raw(sql, data)
+        paginator = Paginator(result, 30)
+        pageNumber = request.GET.get("page")
+        pageObj = paginator.get_page(pageNumber)
+        context = {
+            'pageObj': pageObj,
+        }
+        return render(request, self.template_name, context)
 
 
-class PagesTablesModeView(View):
+class PagesTablesMinView(View, Queries):
+    template_name = 'registros/tabela/mintable.html'
 
-    def tableMode(self, request):
-        pass
+    def get(self, request):
+        sql, data = self.queryMinData()
+        result = DadoDiario.objects.raw(sql, data)
+        paginator = Paginator(result, 30)
+        pageNumber = request.GET.get("page")
+        pageObj = paginator.get_page(pageNumber)
+        context = {
+            'pageObj': pageObj,
+        }
+        return render(request, self.template_name, context)
+
+
+class PagesTablesMedianView(View, Queries):
+    template_name = 'registros/tabela/mediantable.html'
+
+    def get(self, request):
+        sql, data = self.queryMedianData()
+        result = DadoDiario.objects.raw(sql, data)
+        paginator = Paginator(result, 30)
+        pageNumber = request.GET.get("page")
+        pageObj = paginator.get_page(pageNumber)
+        context = {
+            'pageObj': pageObj,
+        }
+        return render(request, self.template_name, context)
+
+
+class PagesTablesModeView(View, Queries):
+    template_name = 'registros/tabela/modetable.html'
+
+    def get(self, request):
+        sql, data = self.queryModeData()
+        result = DadoDiario.objects.raw(sql, data)
+        paginator = Paginator(result, 30)
+        pageNumber = request.GET.get("page")
+        pageObj = paginator.get_page(pageNumber)
+        context = {
+            'pageObj': pageObj,
+        }
+        return render(request, self.template_name, context)
 
 
 class PagesGraphsView(View):
@@ -105,12 +142,11 @@ class PageAboutView(View):
         return render(request, self.template_name)
 
 
-class PageMainRegisters(View):
+class PageMainRegisters(View, Queries):
     template_name = 'registros/menuRegistros.html'
 
     def get(self, request):
-        yDate = Queries()
-        query, data = yDate.queryDateYesterday()
+        query, data = self.queryDateYesterday()
         dateToday = DadoDiario.objects.raw(query, data)
         context = {
             'dateToday': dateToday,
