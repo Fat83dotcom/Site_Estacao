@@ -7,19 +7,19 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th colspan="5" class="text-center">Médias Dados Diarios</th>
+                        <th colspan="5" class="text-center">Médias Diarias</th>
                     </tr>
                 <tbody>
                     <tr class="table-dark">
-                        <td>Dia</td>
-                        <td>Média Umidade %</td>
-                        <td>Média Pressao hPa</td>
-                        <td>Média Temp Interna °C</td>
-                        <td>Média Temp Externa °C</td>
+                        <td>Data</td>
+                        <td>Umidade %</td>
+                        <td>Pressão hPa</td>
+                        <td>Temp Interna °C</td>
+                        <td>Temp Externa °C</td>
                     </tr>
                     {% for data in pageObj %}
                     <tr>
-                        <td>{{data.dia}}</td>
+                        <td>{{data.dia|date}}</td>
                         <td>{{data.media_umidade}}</td>
                         <td>{{data.media_pressao}}</td>
                         <td>{{data.media_temp_int}}</td>
