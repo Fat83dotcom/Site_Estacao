@@ -11,7 +11,7 @@
                     </tr>
                     <tbody>
                         <tr class="table-dark">
-                            <td>Dia</td>
+                            <td>Data</td>
                             <td>Média Umidade %</td>
                             <td>Média Pressao hPa</td>
                             <td>Média Temp Interna °C</td>
@@ -19,7 +19,7 @@
                         </tr>
                         {% for data in dateToday %}
                             <tr>
-                                <td>{{data.dia}}</td>
+                                <td>{{data.dia|date}}</td>
                                 <td>{{data.media_umidade}}</td>
                                 <td>{{data.media_pressao}}</td>
                                 <td>{{data.media_temp_int}}</td>
@@ -32,5 +32,4 @@
         </div>
     </div>
 </div>
-
 {% endblock content %}
