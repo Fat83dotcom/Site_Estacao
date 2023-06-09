@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+{% block content %}
+<div class="wrapper conteiner-fluid">
+    {%include 'partials/sidebarmenutables.html'%}
+    <div id="page-content-wrapper">
+        <div class="conteiner-fluid">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th colspan="5" class="text-center">Medianas Diarias</th>
+                    </tr>
+                <tbody>
+                    <tr class="table-dark">
+                        <td>Data</td>
+                        <td>Média Umidade %</td>
+                        <td>Média Pressao hPa</td>
+                        <td>Média Temp Interna °C</td>
+                        <td>Média Temp Externa °C</td>
+                    </tr>
+                    {% for data in pageObj %}
+                    <tr>
+                        <td>{{data.dia|date}}</td>
+                        <td>{{data.mediana_umidade}}</td>
+                        <td>{{data.mediana_pressao}}</td>
+                        <td>{{data.mediana_temp_int}}</td>
+                        <td>{{data.mediana_temp_ext}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </thead>
+            </table>
+        </div>
+    <div>
+    {% include 'partials/pagination.html' %}
+</div>
+{% endblock content %}
