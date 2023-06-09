@@ -20,7 +20,32 @@ class Queries:
 
     def queryDateYesterday(self) -> tuple:
         sql = 'SELECT * FROM dado_diario WHERE dia=%s'
-        data: list = [f"{self.__dateYesterday()} 00:00:00"]
+        data: tuple = (f"{self.__dateYesterday()} 00:00:00", )
+        return (sql, data)
+
+    def queryMinData(self) -> tuple:
+        sql = 'SELECT * FROM minimas_totais'
+        data: tuple = ()
+        return (sql, data)
+
+    def queryMaxData(self) -> tuple:
+        sql = 'SELECT * FROM maximas_totais'
+        data: tuple = ()
+        return (sql, data)
+
+    def queryMeanData(self) -> tuple:
+        sql = 'SELECT * FROM medias_totais'
+        data: tuple = ()
+        return (sql, data)
+
+    def queryMedianData(self) -> tuple:
+        sql = 'SELECT * FROM medianas_totais'
+        data: tuple = ()
+        return (sql, data)
+
+    def queryModeData(self) -> tuple:
+        sql = 'SELECT * FROM modas_totais'
+        data: tuple = ()
         return (sql, data)
 
 
