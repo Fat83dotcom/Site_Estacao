@@ -15,4 +15,11 @@
         height: 100%;
         background-color: gainsboro;
     }
+    .sidebar-nav{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: row;
+        font-size: smaller;
+    }
 }
