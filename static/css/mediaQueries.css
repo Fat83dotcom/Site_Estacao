@@ -22,4 +22,8 @@
         flex-direction: row;
         font-size: smaller;
     }
+    .table-dark{
+        position: sticky;
+        top: 0;
+    }
 }
