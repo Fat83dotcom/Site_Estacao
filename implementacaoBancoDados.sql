@@ -1,3 +1,4 @@
+-- Active: 1686355749375@@129.148.57.149@5432@dados_estacao
 select current_database();
 
 create database dados_estacao;
@@ -64,30 +65,30 @@ from dado_diario order by dia desc;
 
 select * from maximas_totais;
 
-drop view minimas_totais
+-- drop view minimas_totais;
 
 
 select * from medias_diarias 
 where 
 dia between '2022-1-1' and '2022-12-31'
 and media_temp_int <= 28
-order by dia
+order by dia;
 
 select * from medias_min_max_temp
 where
 dia between '2023-1-1' and '2023-6-2'
 and minimo_temp_int <= 20
-order by dia
+order by dia;
 
-select min(minimo_temp_int) from medias_min_max_temp
+select min(minimo_temp_int) from medias_min_max_temp;
 
-select * from dado_diario where maximo_temp_int >= 60
+select * from dado_diario where maximo_temp_int >= 60;
 
 select * from dado_diario where dia='2023-6-3';
 
-truncate table dado_diario;
+-- truncate table dado_diario;
 
-drop table dado_diario cascade;
+-- drop table dado_diario cascade;
 
 show datastyle;
 
