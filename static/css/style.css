@@ -71,6 +71,9 @@ nav a{
     justify-content: space-between;
     flex-direction: column;
 }
+.sidebar-nav button{
+    color: var(--icon-color);
+}
 .sidebar-nav a{
     text-decoration: none;
     color: var(--icon-color);
