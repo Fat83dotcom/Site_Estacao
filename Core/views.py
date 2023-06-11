@@ -7,6 +7,14 @@ from django.views import View
 
 
 class Queries:
+    def _curretnYear(self):
+        dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
+        dateToday = datetime.strptime(
+            dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
+        )
+        currentYear: str = dateToday.strftime('%Y')
+        return currentYear
+
     def __dateYesterday(self):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateYesterday = datetime.strptime(
