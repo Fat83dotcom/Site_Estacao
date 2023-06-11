@@ -11,12 +11,12 @@ urlpatterns = [
         name='tabelamedia'
     ),
     path(
-        'registro/tabela/minimos',
+        'registros/tabela/minimos',
         views.PagesTablesMinView.as_view(),
         name='tabelamin'
     ),
     path(
-        'registro/tabela/maximos',
+        'registros/tabela/maximos',
         views.PagesTablesMaxView.as_view(),
         name='tabelamax'
     ),
