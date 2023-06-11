@@ -118,6 +118,48 @@ CREATE OR REPLACE VIEW MEDIAS_TOTAIS
 	order by dia
 DESC; 
 
+SELECT dia, maximo_umidade FROM dado_diario
+WHERE maximo_umidade = (SELECT MAX(maximo_umidade) FROM dado_diario)
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023' 
+ORDER BY dia DESC;
+
+SELECT dia, minimo_umidade FROM dado_diario
+WHERE minimo_umidade = (SELECT MAX(minimo_umidade) FROM dado_diario)
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023';
+
+SELECT dia, maximo_temp_ext FROM dado_diario
+WHERE maximo_temp_ext = (SELECT MAX(maximo_temp_ext) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023')
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023' 
+ORDER BY dia DESC;
+
+SELECT dia, minimo_temp_ext FROM dado_diario
+WHERE minimo_temp_ext = 
+(SELECT MAX(minimo_temp_ext) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023')
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023' 
+
+ORDER BY dia DESC;SELECT dia, maximo_pressao FROM dado_diario
+WHERE maximo_pressao = (SELECT MAX(maximo_pressao) FROM dado_diario)
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023' 
+ORDER BY dia DESC;
+
+SELECT dia, minimo_pressao FROM dado_diario
+WHERE minimo_pressao = (SELECT MAX(minimo_pressao) FROM dado_diario)
+AND
+EXTRACT(YEAR FROM(SELECT dia))='2023' 
+ORDER BY dia DESC;
+
+SELECT AVG(media_temp_ext) FROM
+dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+SELECT AVG(media_umidade) FROM
+dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+SELECT AVG(media_pressao) FROM
+dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+
 select * from maximas_totais;
 
 -- drop view medias_totais;
@@ -147,3 +189,6 @@ select * from dado_diario where dia BETWEEN '2022-01-01' AND '2022-04-01';
 -- drop table dado_diario cascade;
 
 show datastyle;
+
+SELECT 0 AS id, AVG(maximo_umidade) FROM
+dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
