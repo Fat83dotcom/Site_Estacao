@@ -357,39 +357,66 @@ class PagesGraphsView(View):
 
 class PageIndexView(View):
     template_name = 'index/index.html'
+    template_error = 'notfound/404.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        try:
+            return render(request, self.template_name)
+        except Exception:
+            return render(request, self.template_error)
 
 
 class PageAboutView(View):
     template_name = 'sobre/sobre.html'
+    template_error = 'notfound/404.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        try:
+            return render(request, self.template_name)
+        except Exception:
+            return render(request, self.template_error)
 
 
 class PageMainRegisters(View, Queries):
     template_name = 'registros/menuRegistros.html'
+    template_error = 'notfound/404.html'
 
     def get(self, request):
-        query, data = self.queryDateYesterday()
-        dateToday = DadoDiario.objects.raw(query, data)
-        context = {
-            'dateToday': dateToday,
-        }
-        return render(request, self.template_name, context)
+        try:
+            query, data = self.queryDateYesterday()
+            dateToday = DadoDiario.objects.raw(query, data)
+            context = {
+                'dateToday': dateToday,
+            }
+            return render(request, self.template_name, context)
+        except Exception:
+            return render(request, self.template_error)
+
+    def post(self, request):
+        return render(request, self.template_error)
 
 
 class PageMainTables(View):
     template_name = 'registros/tabela/tabela.html'
+    template_error = 'notfound/404.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_error)
+
+
+class PageMainGraphs(View):
+    template_name = 'registros/graficos/grafico.html'
+    template_error = 'notfound/404.html'
 
     def get(self, request):
         return render(request, self.template_name)
 
 
-class PageMainGraphs(View):
-    template_name = 'registros/graficos/grafico.html'
+class PageError(View):
+    template_name = 'notfound/404.html'
 
     def get(self, request):
         return render(request, self.template_name)
