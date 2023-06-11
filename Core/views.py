@@ -63,6 +63,14 @@ class Queries:
         data: tuple = (dateStart, dateEnd)
         return (sql, data)
 
+    def queryFilterMaxByCurrentYear(self, collumn: str) -> tuple:
+        currentYear = str(self._curretnYear())
+        sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
+            f' WHERE {collumn}=' \
+            f'(SELECT MAX({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
+            ' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia DESC'
+        data: tuple = (currentYear, currentYear)
+        return (sql, data)
 
 class PagesTableMeanView(View, Queries):
     template_name = 'registros/tabela/meantable.html'
