@@ -13,18 +13,34 @@
                 <tbody>
                     <tr class="table-dark">
                         <td>Data</td>
-                        <td>Umidade %</td>
-                        <td>Pressão hPa</td>
-                        <td>Temp Interna °C</td>
-                        <td>Temp Externa °C</td>
+                        {% if pUmi %}
+                            <td>Umidade %</td>
+                        {% endif %}
+                        {% if pPress %}
+                            <td>Pressão hPa</td>
+                        {% endif %}
+                        {% if pT1 %}
+                            <td>Temp Interna °C</td>
+                        {% endif %}
+                        {% if pT2 %}
+                            <td>Temp Externa °C</td>
+                        {% endif %}
                     </tr>
                     {% for data in pageObj %}
                     <tr>
                         <td>{{data.dia|date}}</td>
-                        <td>{{data.maximo_umidade}}</td>
-                        <td>{{data.maximo_pressao}}</td>
-                        <td>{{data.maximo_temp_int}}</td>
-                        <td>{{data.maximo_temp_ext}}</td>
+                        {% if pUmi%}
+                            <td>{{data.maximo_umidade}}</td>
+                        {% endif %}
+                        {% if pPress%}
+                            <td>{{data.maximo_pressao}}</td>
+                        {% endif %}
+                        {% if pT1%}
+                            <td>{{data.maximo_temp_int}}</td>
+                        {% endif %}
+                        {% if pT2%}
+                            <td>{{data.maximo_temp_ext}}</td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>
