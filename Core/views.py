@@ -72,22 +72,31 @@ class Queries:
         data: tuple = (currentYear, currentYear)
         return (sql, data)
 
-class PagesTableMeanView(View, Queries):
-    template_name = 'registros/tabela/meantable.html'
-    template_error = 'notfound/404.html'
-    action_url = "/registros/tabela/medias"
-    checkDict: dict = {
-        'umi': 1,
-        'press': 1,
-        't1': 1,
-        't2': 1,
-    }
+    def queryFilterMinByCurrentYear(self, collumn: str) -> tuple:
+        currentYear = str(self._curretnYear())
+        sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
+            f' WHERE {collumn}=' \
+            f'(SELECT MIN({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
+            ' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia DESC'
+        data: tuple = (currentYear, currentYear)
+        return (sql, data)
 
-    def get(self, request):
+    def queryFilterMeanByCurrentYear(self, collumn: str):
+        currentYear = self._curretnYear()
+        sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
+            ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
+        data: tuple = (currentYear, )
+        return (sql, data)
+
+
+class MyView(Queries):
+    template_error = 'notfound/404.html'
+
+    def myGet(self, request, numberPager: int):
         try:
             sql, data = self.queryMeanData()
             result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
+            paginator = Paginator(result, numberPager)
             pageNumber = request.GET.get("page")
             pageObj = paginator.get_page(pageNumber)
             context = {
