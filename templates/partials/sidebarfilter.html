@@ -1,0 +1,48 @@
+<hr>
+<nav class="sidebar-nav">
+    <form action="{{actionUrl}}" method="post">
+        {% csrf_token %}
+        <div class="sidebar-var-form">
+            <label for="date-start">De:</label>
+            <input id="date-start" type="date" name="date-start" min="2022-03-05">
+            <hr>
+            <label for="date-start">Até:</label>
+            <input id="date-end" type="date" name="date-end" min="2022-03-05">
+        </div>
+        <hr>
+        <div class="sidebar-var-form">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="check-umi" id="umidade" checked>
+                <label class="form-check-label" for="umidade">
+                  Umidade
+                </label>  
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="check-press" id="pressao" checked>
+                <label class="form-check-label" for="pressao">
+                  Pressão
+                </label>  
+            </div>
+        </div>
+        <div class="sidebar-var-form">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="check-t1" id="tempInt" checked>
+                <label class="form-check-label" for="tempInt">
+                  Temp. Interna
+                </label>  
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="check-t2" id="tempExt" checked>
+                <label class="form-check-label" for="tempExt">
+                  Temp. Externa
+                </label>  
+            </div>
+        </div>
+        <hr>
+        <div class="d-grid gap-2">
+            <button class="btn btn-success text-center " type="submit">Filtrar</button>
+        </div>
+    </form>
+</nav>
+<hr>
+</h3>
