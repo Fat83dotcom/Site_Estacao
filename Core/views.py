@@ -107,12 +107,11 @@ class MyView(Queries):
                 'pT1': self.checkDict['t1'],
                 'pT2': self.checkDict['t2'],
             }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_error)
+            return (self.template_name, context)
+        except Exception:
+            return (self.template_error, {})
 
-    def post(self, request):
+    def myPost(self, request, viewBdType: str):
         try:
             recept = request.POST
             dateStart = recept['date-start']
