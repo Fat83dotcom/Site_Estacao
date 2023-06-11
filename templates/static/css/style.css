@@ -64,6 +64,8 @@ nav a{
     width: 25%;
     background-color: gainsboro;
     height: 100%;
+    position: sticky;
+    top: 0;
 }
 .sidebar-nav{
     display: flex;
