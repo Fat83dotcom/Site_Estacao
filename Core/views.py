@@ -224,65 +224,81 @@ class PagesTablesModeView(View, MyView):
     }
 
     def get(self, request):
-        try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.GET.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_error)
+        template, context = self.myGet(request, 30)
+        return render(request, template, context)
 
     def post(self, request):
-        try:
-            recept = request.POST
-            dateStart = recept['date-start']
-            dateEnd = recept['date-end']
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, 'modas')
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.POST.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
-            self.checkDict['press'] = 1 if 'check-press' in recept else 0
-            self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
-            self.checkDict['t2'] = 1 if 'check-t2' in recept else 0
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e)
-            return render(request, self.template_name)
+        template, context = self.myPost(request, 'modas')
+        return render(request, template, context)
 
 
 class PagesGraphsView(View):
     pass
 
 
-class PageIndexView(View):
+class PageIndexView(View, Queries):
     template_name = 'index/index.html'
     template_error = 'notfound/404.html'
 
     def get(self, request):
         try:
-            return render(request, self.template_name)
-        except Exception:
+            currentYear = self._curretnYear()
+
+            sql, data = self.queryFilterMaxByCurrentYear(
+                'maximo_temp_ext'
+            )
+            resultMaxTemp = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMinByCurrentYear(
+                'minimo_temp_ext'
+            )
+            resultMinTemp = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMeanByCurrentYear('media_temp_ext')
+            resultMeanTemp = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMaxByCurrentYear(
+                'maximo_umidade'
+            )
+            resultMaxUmi = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMinByCurrentYear(
+                'minimo_umidade'
+            )
+            resultMinUmi = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMeanByCurrentYear('media_umidade')
+            resultMeanUmi = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMaxByCurrentYear(
+                'maximo_pressao'
+            )
+            resultMaxPress = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMinByCurrentYear(
+                'minimo_pressao'
+            )
+            resultMinPress = DadoDiario.objects.raw(sql, data)
+
+            sql, data = self.queryFilterMeanByCurrentYear('media_pressao')
+            resultMeanPress = DadoDiario.objects.raw(sql, data)
+            counter = 0
+            context = {
+                'resultMaxTemp': list(resultMaxTemp),
+                'resultMinTemp': resultMinTemp,
+                'resultMeanTemp': resultMeanTemp,
+                'resultMaxUmi': resultMaxUmi,
+                'resultMinUmi': resultMinUmi,
+                'resultMeanUmi': resultMeanUmi,
+                'resultMaxPress': resultMaxPress,
+                'resultMinPress': resultMinPress,
+                'resultMeanPress': resultMeanPress,
+                'currentYear': currentYear,
+                'counter': counter,
+            }
+            return render(request, self.template_name, context)
+        except Exception as e:
+            print(e.__class__.__name__, e)
             return render(request, self.template_error)
 
 
