@@ -116,32 +116,48 @@ class MyView(Queries):
             recept = request.POST
             dateStart = recept['date-start']
             dateEnd = recept['date-end']
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, 'medias')
+            if not dateStart or not dateEnd:
+                return (self.template_error, {})
+            sql, data = self.queryFilterByDate(dateStart, dateEnd, viewBdType)
             result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.POST.get("page")
-            pageObj = paginator.get_page(pageNumber)
             self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
             self.checkDict['press'] = 1 if 'check-press' in recept else 0
             self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
             self.checkDict['t2'] = 1 if 'check-t2' in recept else 0
             context = {
-                'pageObj': pageObj,
+                'pageObj': result,
                 'actionUrl': self.action_url,
                 'pUmi': self.checkDict['umi'],
                 'pPress': self.checkDict['press'],
                 'pT1': self.checkDict['t1'],
                 'pT2': self.checkDict['t2'],
             }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_name)
+            return (self.template_name, context)
+        except Exception:
+            return (self.template_error, {})
 
 
-class PagesTablesMaxView(View, Queries):
+class PagesTableMeanView(View, MyView):
+    template_name = 'registros/tabela/meantable.html'
+    action_url = "/registros/tabela/medias"
+    checkDict: dict = {
+        'umi': 1,
+        'press': 1,
+        't1': 1,
+        't2': 1,
+    }
+
+    def get(self, request):
+        template, context = self.myGet(request, 30)
+        return render(request, template, context)
+
+    def post(self, request):
+        template, context = self.myPost(request, 'medias')
+        return render(request, template, context)
+
+
+class PagesTablesMaxView(View, MyView):
     template_name = 'registros/tabela/maxtable.html'
-    template_error = 'notfound/404.html'
     action_url = "/registros/tabela/maximos"
     checkDict: dict = {
         'umi': 1,
@@ -151,56 +167,16 @@ class PagesTablesMaxView(View, Queries):
     }
 
     def get(self, request):
-        try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.GET.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_error)
+        template, context = self.myGet(request, 30)
+        return render(request, template, context)
 
     def post(self, request):
-        try:
-            recept = request.POST
-            dateStart = recept['date-start']
-            dateEnd = recept['date-end']
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, 'maximas')
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.POST.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
-            self.checkDict['press'] = 1 if 'check-press' in recept else 0
-            self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
-            self.checkDict['t2'] = 1 if 'check-t2' in recept else 0
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e)
-            return render(request, self.template_name)
+        template, context = self.myPost(request, 'maximas')
+        return render(request, template, context)
 
 
-class PagesTablesMinView(View, Queries):
+class PagesTablesMinView(View, MyView):
     template_name = 'registros/tabela/mintable.html'
-    template_error = 'notfound/404.html'
     action_url = "/registros/tabela/minimos"
     checkDict: dict = {
         'umi': 1,
@@ -210,56 +186,16 @@ class PagesTablesMinView(View, Queries):
     }
 
     def get(self, request):
-        try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.GET.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_error)
+        template, context = self.myGet(request, 30)
+        return render(request, template, context)
 
     def post(self, request):
-        try:
-            recept = request.POST
-            dateStart = recept['date-start']
-            dateEnd = recept['date-end']
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, 'minimas')
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.POST.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
-            self.checkDict['press'] = 1 if 'check-press' in recept else 0
-            self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
-            self.checkDict['t2'] = 1 if 'check-t2' in recept else 0
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e)
-            return render(request, self.template_name)
+        template, context = self.myPost(request, 'minimas')
+        return render(request, template, context)
 
 
-class PagesTablesMedianView(View, Queries):
+class PagesTablesMedianView(View, MyView):
     template_name = 'registros/tabela/mediantable.html'
-    template_error = 'notfound/404.html'
     action_url = "/registros/tabela/medianas"
     checkDict: dict = {
         'umi': 1,
@@ -269,56 +205,16 @@ class PagesTablesMedianView(View, Queries):
     }
 
     def get(self, request):
-        try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.GET.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e.__class__.__name__, e)
-            return render(request, self.template_error)
+        template, context = self.myGet(request, 30)
+        return render(request, template, context)
 
     def post(self, request):
-        try:
-            recept = request.POST
-            dateStart = recept['date-start']
-            dateEnd = recept['date-end']
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, 'medianas')
-            result = DadoDiario.objects.raw(sql, data)
-            paginator = Paginator(result, 30)
-            pageNumber = request.POST.get("page")
-            pageObj = paginator.get_page(pageNumber)
-            self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
-            self.checkDict['press'] = 1 if 'check-press' in recept else 0
-            self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
-            self.checkDict['t2'] = 1 if 'check-t2' in recept else 0
-            context = {
-                'pageObj': pageObj,
-                'actionUrl': self.action_url,
-                'pUmi': self.checkDict['umi'],
-                'pPress': self.checkDict['press'],
-                'pT1': self.checkDict['t1'],
-                'pT2': self.checkDict['t2'],
-            }
-            return render(request, self.template_name, context)
-        except Exception as e:
-            print(e)
-            return render(request, self.template_name)
+        template, context = self.myPost(request, 'medianas')
+        return render(request, template, context)
 
 
-class PagesTablesModeView(View, Queries):
+class PagesTablesModeView(View, MyView):
     template_name = 'registros/tabela/modetable.html'
-    template_error = 'notfound/404.html'
     action_url = "/registros/tabela/modas"
     checkDict: dict = {
         'umi': 1,
