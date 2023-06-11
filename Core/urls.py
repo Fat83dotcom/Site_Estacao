@@ -36,4 +36,5 @@ urlpatterns = [
         name='graficos'
     ),
     path('sobre/', views.PageAboutView.as_view(), name='sobre'),
+    path('error/', views.PageError.as_view(), name='error'),
 ]
