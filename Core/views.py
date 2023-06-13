@@ -349,7 +349,7 @@ class TablesView(Queries):
             return (self.template_error, {})
 
 
-class PagesTableMeanView(View, MyView):
+class PagesTableMeanView(View, TablesView):
     template_name = 'registros/tabela/meantable.html'
     action_url = "/registros/tabela/medias"
     checkDict: dict = {
@@ -360,15 +360,15 @@ class PagesTableMeanView(View, MyView):
     }
 
     def get(self, request):
-        template, context = self.myGet(request, 30)
+        template, context = self.tableGet(request, 30)
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.myPost(request, 'medias')
+        template, context = self.tablePost(request, 'medias')
         return render(request, template, context)
 
 
-class PagesTablesMaxView(View, MyView):
+class PagesTablesMaxView(View, TablesView):
     template_name = 'registros/tabela/maxtable.html'
     action_url = "/registros/tabela/maximos"
     checkDict: dict = {
@@ -379,15 +379,15 @@ class PagesTablesMaxView(View, MyView):
     }
 
     def get(self, request):
-        template, context = self.myGet(request, 30)
+        template, context = self.tableGet(request, 30)
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.myPost(request, 'maximas')
+        template, context = self.tablePost(request, 'maximas')
         return render(request, template, context)
 
 
-class PagesTablesMinView(View, MyView):
+class PagesTablesMinView(View, TablesView):
     template_name = 'registros/tabela/mintable.html'
     action_url = "/registros/tabela/minimos"
     checkDict: dict = {
@@ -398,15 +398,15 @@ class PagesTablesMinView(View, MyView):
     }
 
     def get(self, request):
-        template, context = self.myGet(request, 30)
+        template, context = self.tableGet(request, 30)
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.myPost(request, 'minimas')
+        template, context = self.tablePost(request, 'minimas')
         return render(request, template, context)
 
 
-class PagesTablesMedianView(View, MyView):
+class PagesTablesMedianView(View, TablesView):
     template_name = 'registros/tabela/mediantable.html'
     action_url = "/registros/tabela/medianas"
     checkDict: dict = {
@@ -417,15 +417,15 @@ class PagesTablesMedianView(View, MyView):
     }
 
     def get(self, request):
-        template, context = self.myGet(request, 30)
+        template, context = self.tableGet(request, 30)
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.myPost(request, 'medianas')
+        template, context = self.tablePost(request, 'medianas')
         return render(request, template, context)
 
 
-class PagesTablesModeView(View, MyView):
+class PagesTablesModeView(View, TablesView):
     template_name = 'registros/tabela/modetable.html'
     action_url = "/registros/tabela/modas"
     checkDict: dict = {
