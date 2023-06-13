@@ -436,16 +436,40 @@ class PagesTablesModeView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.myGet(request, 30)
+        template, context = self.tableGet(request, 30)
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.myPost(request, 'modas')
+        template, context = self.tablePost(request, 'modas')
         return render(request, template, context)
 
 
-class PagesGraphsView(View):
-    pass
+class PagesGraphsViewBar(View, GraphsView):
+    template_name = 'registros/graficos/bargraphs.html'
+    action_url = '/registros/graficos/barra'
+    graphType = 'Gráfico de Barras - Temperatura dos Últimos 5 dias.'
+
+    def get(self, request):
+        template_name, context = self.graphGet(request, self.graphType)
+        return render(request, template_name, context)
+
+    def post(self, request):
+        template_name, context = self.graphPost(request)
+        return render(request, template_name, context)
+
+
+class PagesGraphsViewLine(View, GraphsView):
+    template_name = 'registros/graficos/linegraphs.html'
+    action_url = '/registros/graficos/linha'
+    graphType = 'Gráfico de Linhas - Temperatura dos Últimos 5 dias.'
+
+    def get(self, request):
+        template_name, context = self.graphGet(request, self.graphType)
+        return render(request, template_name, context)
+
+    def post(self, request):
+        template_name, context = self.graphPost(request)
+        return render(request, template_name, context)
 
 
 class PageIndexView(View, Queries):
