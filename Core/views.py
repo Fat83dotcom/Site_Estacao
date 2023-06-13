@@ -118,11 +118,191 @@ class Queries:
         data: tuple = (currentYear, )
         return (sql, data)
 
+    def queryFilterDateRange(
+        self, dateStart: str,
+        dateEnd: str,
+        viewBdType='label_datas',
+        ordering='DESC'
+    ) -> tuple:
+        sql = f'SELECT * FROM {viewBdType} WHERE dia BETWEEN %s AND %s' \
+            f' ORDER BY dia {ordering}'
+        data: tuple = (dateStart, dateEnd)
+        return (sql, data)
 
-class MyView(Queries):
+
+class ManagerGraphs(Queries):
+    colors = {
+        'Umidade': {
+            'maximas': 'rgba(92, 88, 11, 1)',
+            'minimas': 'rgba(232, 222, 28, 1)',
+            'medias': 'rgba(219, 211, 27, 1)',
+            'medianas': 'rgba(156, 149, 19, 1)',
+            'modas': 'rgba(194, 185, 23, 1)',
+        },
+        'Pressao': {
+            'maximas': 'rgba(22, 92, 50, 1)',
+            'minimas': 'rgba(56, 232, 126, 1)',
+            'medias': 'rgba(37, 156, 85, 1)',
+            'medianas': 'rgba(53, 219, 119, )',
+            'modas': 'rgba(47, 194, 105, 1)',
+        },
+        'Temperatura-Interna': {
+            'maximas': 'rgba(36, 34, 92, 1)',
+            'minimas': 'rgba(91, 86, 232, 1)',
+            'medias': 'rgba(61, 58, 156, 1)',
+            'medianas': 'rgba(86, 82, 219, 1)',
+            'modas': 'rgba(76, 72, 194, 1)',
+        },
+        'Temperatura-Externa': {
+            'maximas': 'rgba(92, 17, 13, 1',
+            'minimas': 'rgba(232, 42, 32, 1)',
+            'medias': 'rgba(156, 28, 22, 1)',
+            'medianas': 'rgba(220, 41, 31, 1)',
+            'modas': 'rgba(194, 35, 27, 1)',
+        }
+    }
+
+    def graph(self, physQuantity: str, meassure: str, data: list) -> dict:
+        returnDataSet = {
+            'label': f'{physQuantity} - {meassure}',
+            'data': data,
+            'backgroundColor': self.colors[physQuantity][meassure],
+            'borderColor': '#000',
+            'borderWidth': 1
+        }
+        return returnDataSet
+
+    def dataGraph(
+        self, dateStart: str,
+        dateEnd: str,
+        viewBdType: str,
+        collumnBd: str
+    ) -> list:
+        try:
+            extractData: list = []
+            sql, data = self.queryFilterColumnByDate(
+                dateStart, dateEnd, viewBdType, collumnBd, ordering='ASC'
+            )
+            result = DadoDiario.objects.raw(sql, data)
+            for i in result:
+                collumnValue = getattr(i, collumnBd)
+                extractData.append(collumnValue)
+            return extractData
+        except Exception as e:
+            print(e)
+            raise e
+
+    def labelGraph(self, dateStart: str, dateEnd: str) -> list:
+        label: list = []
+        sql, data = self.queryFilterDateRange(
+            dateStart,
+            dateEnd,
+            ordering='ASC')
+        result = DadoDiario.objects.raw(sql, data)
+        for i in result:
+            date = self._formatDate('%d/%m/%Y', i.dia)
+            label.append(date)
+        return label
+
+
+class GraphsView(ManagerGraphs):
+    template_error = 'notfound/404.html'
+    collumnBdRelation = {
+        'Umidade': {
+            'medias': 'media_umidade',
+            'maximas': 'maximo_umidade',
+            'minimas': 'minimo_umidade',
+            'medianas': 'mediana_umidade',
+            'modas': 'moda_umidade'
+        },
+        'Pressao': {
+            'medias': 'media_pressao',
+            'maximas': 'maximo_pressao',
+            'minimas': 'minimo_pressao',
+            'medianas': 'mediana_pressao',
+            'modas': 'moda_pressao'
+        },
+        'Temperatura-Interna': {
+            'medias': 'media_temp_int',
+            'maximas': 'maximo_temp_int',
+            'minimas': 'minimo_temp_int',
+            'medianas': 'mediana_temp_int',
+            'modas': 'moda_temp_int'
+        },
+        'Temperatura-Externa': {
+            'medias': 'media_temp_ext',
+            'maximas': 'maximo_temp_ext',
+            'minimas': 'minimo_temp_ext',
+            'medianas': 'mediana_temp_ext',
+            'modas': 'moda_temp_ext'
+        },
+    }
+    meassures = ['medias', 'maximas', 'minimas', 'medianas', 'modas']
+
+    def graphGet(self, request, graphType: str):
+        startDate = self._retroactiveDate(5)
+        endDate = self._retroactiveDate(1)
+        dataSets: list = []
+        labels: list = self.labelGraph(startDate, endDate)
+        tempMeassure = ['maximas', 'minimas']
+        for i in tempMeassure:
+            collumnBd = self.collumnBdRelation['Temperatura-Externa'][i]
+            data = self.dataGraph(
+                startDate, endDate, f'{i}_totais', collumnBd
+            )
+            dTS = self.graph('Temperatura-Externa', i, data)
+            dataSets.append(dTS)
+
+        context = {
+            'dataSets': dataSets,
+            'labels': labels,
+            'graphType': graphType
+        }
+        return self.template_name, context
+
+    def graphPost(self, request):
+        try:
+            dataReq = request.POST
+            dateStart = dataReq['date-start']
+            dateEnd = dataReq['date-end']
+            if not dateStart or not dateEnd:
+                return self.template_error, {
+                    'alert': 'Talves você esqueceu as datas ...'
+                }
+            if 'flexRadioDefault' in dataReq:
+                physQuantity = dataReq['flexRadioDefault']
+            else:
+                return self.template_error, {
+                    'alert': 'Marque um sensor ...'
+                }
+            dataSets: list = []
+            labels: list = self.labelGraph(dateStart, dateEnd)
+            for i in self.meassures:
+                if i in dataReq:
+                    collumnBd = self.collumnBdRelation[physQuantity][i]
+                    data = self.dataGraph(
+                        dateStart, dateEnd, f'{i}_totais', collumnBd
+                    )
+                    dTS = self.graph(physQuantity, i, data)
+                    dataSets.append(dTS)
+            graphTitle = f'De {dateStart} até {dateEnd} : {physQuantity}'
+            context = {
+                'dataSets': dataSets,
+                'labels': labels,
+                'graphTitle': graphTitle
+            }
+            return self.template_name, context
+        except Exception as e:
+            print(e.__class__.__name__, e)
+            return self.template_error, {
+                'alert': e,
+            }
+
+
+class TablesView(Queries):
     template_error = 'notfound/404.html'
 
-    def myGet(self, request, numberPager: int):
+    def tableGet(self, request, numberPager: int):
         try:
             sql, data = self.queryMeanData()
             result = DadoDiario.objects.raw(sql, data)
