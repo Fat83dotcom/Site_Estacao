@@ -77,21 +77,37 @@ class Queries:
         data: tuple = (dateStart, dateEnd)
         return (sql, data)
 
-    def queryFilterMaxByCurrentYear(self, collumn: str) -> tuple:
+    def queryFilterColumnByDate(
+        self, dateStart: str,
+        dateEnd: str,
+        viewBdType: str,
+        collumn: str,
+        ordering='DESC'
+    ) -> tuple:
+        sql = f'SELECT codigo, {collumn} FROM {viewBdType} WHERE dia BETWEEN %s AND %s' \
+            f' ORDER BY dia {ordering}'
+        data: tuple = (dateStart, dateEnd)
+        return (sql, data)
+
+    def queryFilterMaxByCurrentYear(
+        self, collumn: str, ordering='DESC'
+    ) -> tuple:
         currentYear = str(self._curretnYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT MAX({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
-            ' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia DESC'
+            f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
         data: tuple = (currentYear, currentYear)
         return (sql, data)
 
-    def queryFilterMinByCurrentYear(self, collumn: str) -> tuple:
+    def queryFilterMinByCurrentYear(
+        self, collumn: str, ordering='DESC'
+    ) -> tuple:
         currentYear = str(self._curretnYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT MIN({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
-            ' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia DESC'
+            f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
         data: tuple = (currentYear, currentYear)
         return (sql, data)
 
