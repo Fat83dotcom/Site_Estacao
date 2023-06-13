@@ -7,6 +7,9 @@ from django.views import View
 
 
 class Queries:
+    def _formatDate(self, format: str, datetimeObj: datetime):
+        return datetimeObj.strftime(format)
+
     def _curretnYear(self):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateToday = datetime.strptime(
@@ -20,6 +23,17 @@ class Queries:
         dateYesterday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
         ) - timedelta(1)
+        dayYesterday: int = int(dateYesterday.strftime('%d'))
+        monthYesterday: int = int(dateYesterday.strftime('%m'))
+        yearYesterday: int = int(dateYesterday.strftime('%Y'))
+        queryDate = date(yearYesterday, monthYesterday, dayYesterday)
+        return queryDate
+
+    def _retroactiveDate(self, numberDaysComeBack: int):
+        dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
+        dateYesterday = datetime.strptime(
+            dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
+        ) - timedelta(numberDaysComeBack)
         dayYesterday: int = int(dateYesterday.strftime('%d'))
         monthYesterday: int = int(dateYesterday.strftime('%m'))
         yearYesterday: int = int(dateYesterday.strftime('%Y'))
