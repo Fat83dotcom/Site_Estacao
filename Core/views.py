@@ -133,32 +133,32 @@ class Queries:
 class ManagerGraphs(Queries):
     colors = {
         'Umidade': {
-            'maximas': 'rgba(92, 88, 11, 1)',
-            'minimas': 'rgba(232, 222, 28, 1)',
-            'medias': 'rgba(219, 211, 27, 1)',
-            'medianas': 'rgba(156, 149, 19, 1)',
-            'modas': 'rgba(194, 185, 23, 1)',
+            'maximas': 'rgba(92, 88, 11, 0.8)',
+            'minimas': 'rgba(232, 222, 28, 0.8)',
+            'medias': 'rgba(219, 211, 27, 0.8)',
+            'medianas': 'rgba(156, 149, 19, 0.8)',
+            'modas': 'rgba(194, 185, 23, 0.8)',
         },
         'Pressao': {
-            'maximas': 'rgba(22, 92, 50, 1)',
-            'minimas': 'rgba(56, 232, 126, 1)',
-            'medias': 'rgba(37, 156, 85, 1)',
+            'maximas': 'rgba(22, 92, 50, 0.8)',
+            'minimas': 'rgba(56, 232, 126, 0.8)',
+            'medias': 'rgba(37, 156, 85, 0.8)',
             'medianas': 'rgba(53, 219, 119, )',
-            'modas': 'rgba(47, 194, 105, 1)',
+            'modas': 'rgba(47, 194, 105, 0.8)',
         },
         'Temperatura-Interna': {
-            'maximas': 'rgba(36, 34, 92, 1)',
-            'minimas': 'rgba(91, 86, 232, 1)',
-            'medias': 'rgba(61, 58, 156, 1)',
-            'medianas': 'rgba(86, 82, 219, 1)',
-            'modas': 'rgba(76, 72, 194, 1)',
+            'maximas': 'rgba(36, 34, 92, 0.8)',
+            'minimas': 'rgba(91, 86, 232, 0.8)',
+            'medias': 'rgba(61, 58, 156, 0.8)',
+            'medianas': 'rgba(86, 82, 219, 0.8)',
+            'modas': 'rgba(76, 72, 194, 0.8)',
         },
         'Temperatura-Externa': {
-            'maximas': 'rgba(92, 17, 13, 1',
-            'minimas': 'rgba(232, 42, 32, 1)',
-            'medias': 'rgba(156, 28, 22, 1)',
-            'medianas': 'rgba(220, 41, 31, 1)',
-            'modas': 'rgba(194, 35, 27, 1)',
+            'maximas': 'rgba(92, 17, 13, 0.8',
+            'minimas': 'rgba(232, 42, 32, 0.8)',
+            'medias': 'rgba(156, 28, 22, 0.8)',
+            'medianas': 'rgba(220, 41, 31, 0.8)',
+            'modas': 'rgba(194, 35, 27, 0.8)',
         }
     }
 
