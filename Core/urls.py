@@ -35,6 +35,16 @@ urlpatterns = [
         views.PageMainGraphs.as_view(),
         name='graficos'
     ),
+    path(
+        'registros/graficos/barra',
+        views.PagesGraphsViewBar.as_view(),
+        name='barra'
+    ),
+    path(
+        'registros/graficos/linha',
+        views.PagesGraphsViewLine.as_view(),
+        name='linha'
+    ),
     path('sobre/', views.PageAboutView.as_view(), name='sobre'),
     path('error/', views.PageError.as_view(), name='error'),
 ]
