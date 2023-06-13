@@ -318,16 +318,18 @@ class TablesView(Queries):
                 'pT2': self.checkDict['t2'],
             }
             return (self.template_name, context)
-        except Exception:
-            return (self.template_error, {})
+        except Exception as e:
+            return (self.template_error, {'alert': e})
 
-    def myPost(self, request, viewBdType: str):
+    def tablePost(self, request, viewBdType: str):
         try:
             recept = request.POST
             dateStart = recept['date-start']
             dateEnd = recept['date-end']
             if not dateStart or not dateEnd:
-                return (self.template_error, {})
+                return (self.template_error, {
+                    'alert': 'Talves você esqueceu as datas ...'}
+                )
             sql, data = self.queryFilterByDate(dateStart, dateEnd, viewBdType)
             result = DadoDiario.objects.raw(sql, data)
             self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
