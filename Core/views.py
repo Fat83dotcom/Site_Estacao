@@ -29,11 +29,11 @@ class Queries:
         queryDate = date(yearYesterday, monthYesterday, dayYesterday)
         return queryDate
 
-    def _retroactiveDate(self, numberDaysComeBack: int):
+    def _retroactiveDate(self, numberDaysTurnBack: int):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateYesterday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
-        ) - timedelta(numberDaysComeBack)
+        ) - timedelta(numberDaysTurnBack)
         dayYesterday: int = int(dateYesterday.strftime('%d'))
         monthYesterday: int = int(dateYesterday.strftime('%m'))
         yearYesterday: int = int(dateYesterday.strftime('%Y'))
@@ -238,13 +238,14 @@ class GraphsView(ManagerGraphs):
         },
     }
     meassures = ['medias', 'maximas', 'minimas', 'medianas', 'modas']
+    nDaysTurnBack = 30
 
-    def graphGet(self, request, graphType: str):
-        startDate = self._retroactiveDate(5)
+    def graphGet(self, numberDaysTurnBack: int):
+        startDate = self._retroactiveDate(numberDaysTurnBack)
         endDate = self._retroactiveDate(1)
         dataSets: list = []
         labels: list = self.labelGraph(startDate, endDate)
-        tempMeassure = ['maximas', 'minimas']
+        tempMeassure = ['maximas', 'minimas', 'medias']
         for i in tempMeassure:
             collumnBd = self.collumnBdRelation['Temperatura-Externa'][i]
             data = self.dataGraph(
@@ -252,7 +253,8 @@ class GraphsView(ManagerGraphs):
             )
             dTS = self.graph('Temperatura-Externa', i, data)
             dataSets.append(dTS)
-
+        graphType = 'Gráfico de Barras - ' + \
+            f'Temperatura dos Últimos {numberDaysTurnBack} dias.'
         context = {
             'dataSets': dataSets,
             'labels': labels,
@@ -263,8 +265,8 @@ class GraphsView(ManagerGraphs):
     def graphPost(self, request):
         try:
             dataReq = request.POST
-            dateStart = dataReq['date-start']
-            dateEnd = dataReq['date-end']
+            dateStart: str = dataReq['date-start']
+            dateEnd: str = dataReq['date-end']
             if not dateStart or not dateEnd:
                 return self.template_error, {
                     'alert': 'Talves você esqueceu as datas ...'
@@ -447,10 +449,9 @@ class PagesTablesModeView(View, TablesView):
 class PagesGraphsViewBar(View, GraphsView):
     template_name = 'registros/graficos/bargraphs.html'
     action_url = '/registros/graficos/barra'
-    graphType = 'Gráfico de Barras - Temperatura dos Últimos 5 dias.'
 
     def get(self, request):
-        template_name, context = self.graphGet(request, self.graphType)
+        template_name, context = self.graphGet(self.nDaysTurnBack)
         return render(request, template_name, context)
 
     def post(self, request):
@@ -461,10 +462,9 @@ class PagesGraphsViewBar(View, GraphsView):
 class PagesGraphsViewLine(View, GraphsView):
     template_name = 'registros/graficos/linegraphs.html'
     action_url = '/registros/graficos/linha'
-    graphType = 'Gráfico de Linhas - Temperatura dos Últimos 5 dias.'
 
     def get(self, request):
-        template_name, context = self.graphGet(request, self.graphType)
+        template_name, context = self.graphGet(self.nDaysTurnBack)
         return render(request, template_name, context)
 
     def post(self, request):
