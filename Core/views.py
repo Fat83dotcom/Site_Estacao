@@ -1,16 +1,16 @@
-from django.shortcuts import render
-from django.core.paginator import Paginator
-from .models import DadoDiario
-from datetime import date, datetime, timedelta
 from pytz import timezone
 from django.views import View
+from .models import DadoDiario
+from django.shortcuts import render
+from django.core.paginator import Paginator
+from datetime import date, datetime, timedelta
 
 
-class Queries:
-    def _formatDate(self, format: str, datetimeObj: datetime):
+class DateManager:
+    def formatDate(self, format: str, datetimeObj: datetime):
         return datetimeObj.strftime(format)
 
-    def _curretnYear(self):
+    def currentYear(self):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateToday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
@@ -18,7 +18,7 @@ class Queries:
         currentYear: str = dateToday.strftime('%Y')
         return currentYear
 
-    def __dateYesterday(self):
+    def _dateYesterday(self):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateYesterday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
@@ -29,6 +29,8 @@ class Queries:
         queryDate = date(yearYesterday, monthYesterday, dayYesterday)
         return queryDate
 
+
+class Queries(DateManager):
     def _retroactiveDate(self, numberDaysTurnBack: int):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateYesterday = datetime.strptime(
@@ -42,7 +44,7 @@ class Queries:
 
     def queryDateYesterday(self) -> tuple:
         sql = 'SELECT * FROM dado_diario WHERE dia=%s'
-        data: tuple = (f"{self.__dateYesterday()} 00:00:00", )
+        data: tuple = (f"{self._dateYesterday()} 00:00:00", )
         return (sql, data)
 
     def queryMinData(self) -> tuple:
@@ -92,7 +94,7 @@ class Queries:
     def queryFilterMaxByCurrentYear(
         self, collumn: str, ordering='DESC'
     ) -> tuple:
-        currentYear = str(self._curretnYear())
+        currentYear = str(self.currentYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT MAX({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
@@ -103,7 +105,7 @@ class Queries:
     def queryFilterMinByCurrentYear(
         self, collumn: str, ordering='DESC'
     ) -> tuple:
-        currentYear = str(self._curretnYear())
+        currentYear = str(self.currentYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT MIN({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
@@ -112,7 +114,7 @@ class Queries:
         return (sql, data)
 
     def queryFilterMeanByCurrentYear(self, collumn: str):
-        currentYear = self._curretnYear()
+        currentYear = self.currentYear()
         sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
             ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
         data: tuple = (currentYear, )
@@ -200,7 +202,7 @@ class ManagerGraphs(Queries):
             ordering='ASC')
         result = DadoDiario.objects.raw(sql, data)
         for i in result:
-            date = self._formatDate('%d/%m/%Y', i.dia)
+            date = self.formatDate('%d/%m/%Y', i.dia)
             label.append(date)
         return label
 
@@ -478,7 +480,7 @@ class PageIndexView(View, Queries):
 
     def get(self, request):
         try:
-            currentYear = self._curretnYear()
+            currentYear = self.currentYear()
 
             sql, data = self.queryFilterMaxByCurrentYear(
                 'maximo_temp_ext'
