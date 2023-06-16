@@ -4,13 +4,13 @@
 <section class="text-center">
   <p>Seja bem vindo(a)!</p>
 </section>
-<h3 class="text-center">Estatísticas</h3>
+<h3 class="text-center">Estatísticas {{currentYear}}</h3>
 <div class="container-fluid text-center">
   <div class="row">
     <div class="col m-2 conteiner-index">
       {% for data in resultMaxTemp %}
         {% if forloop.counter0 == 0%}
-          <p>Maior temperatura registrada em {{currentYear}}</p>
+          <p>Maior temperatura</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.maximo_temp_ext}}°C</p>
         {% endif %}
@@ -19,7 +19,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMinTemp %}
         {% if forloop.counter0 == 0%}
-          <p>Menor temperatura registrada em {{currentYear}}</p>
+          <p>Menor temperatura</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.minimo_temp_ext}}°C</p>
         {% endif %}
@@ -28,7 +28,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMeanTemp %}
         {% if forloop.counter0 == 0%}
-          <p>Temperatura média em {{currentYear}}</p>
+          <p>Temperatura média</p>
           <p>{{data.avg|roundFilter:2}}°C</p>
         {% endif %}
       {% endfor %}
@@ -38,7 +38,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMaxUmi %}
         {% if forloop.counter0 == 0%}
-          <p>Maior umidade registrada em {{currentYear}}</p>
+          <p>Maior umidade</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.maximo_umidade}}%</p>
         {% endif %}
@@ -47,7 +47,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMinUmi %}
         {% if forloop.counter0 == 0%}
-          <p>Menor umidade registrada em {{currentYear}}</p>
+          <p>Menor umidade</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.minimo_umidade}}%</p>
         {% endif %}
@@ -56,7 +56,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMeanUmi %}
         {% if forloop.counter0 == 0%}
-          <p>Umidade média em {{currentYear}}</p>
+          <p>Umidade média</p>
           <p>{{data.avg|roundFilter:2}}%</p>
         {% endif %}
       {% endfor %}
@@ -66,7 +66,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMaxPress %}
         {% if forloop.counter0 == 0%}
-          <p>Maior pressão atmosférica registrada em {{currentYear}}</p>
+          <p>Maior pressão atmosférica</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.maximo_pressao}} hPa</p>
         {% endif %}
@@ -75,7 +75,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMinPress %}
         {% if forloop.counter0 == 0%}
-          <p>Menor pressão atmosférica registrada em {{currentYear}}</p>
+          <p>Menor pressão atmosférica</p>
           <p>Data: {{data.dia|date}}</p>
           <p>{{data.minimo_pressao}} hPa</p>
         {% endif %}
@@ -84,7 +84,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMeanPress %}
         {% if forloop.counter0 == 0%}
-          <p>Pressão atmosférica média em {{currentYear}}</p>
+          <p>Pressão atmosférica média/p>
           <p>{{data.avg|roundFilter:2}} hPa</p>
         {% endif %}
       {% endfor %}
