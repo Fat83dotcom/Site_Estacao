@@ -84,7 +84,7 @@
     <div class="col m-2 conteiner-index">
       {% for data in resultMeanPress %}
         {% if forloop.counter0 == 0%}
-          <p>Pressão atmosférica média/p>
+          <p>Pressão atmosférica média</p>
           <p>{{data.avg|roundFilter:2}} hPa</p>
         {% endif %}
       {% endfor %}
