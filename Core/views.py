@@ -140,6 +140,25 @@ class Queries(DateManager):
         data: tuple = (dateStart, dateEnd)
         return (sql, data)
 
+    def queryExtractYearsFromTable(self) -> tuple:
+        sql = 'SELECT DISTINCT EXTRACT(YEAR FROM dia) as ano, 1 as codigo ' \
+            'FROM dado_diario'
+        data: tuple = ()
+        return sql, data
+
+    def queryFilterMeassureByYear(
+            self, year: str,
+            collumn: str,
+            functionSQL: str,
+            ordering: str):
+        sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
+            f' WHERE {collumn}=' \
+            f'(SELECT {functionSQL}({collumn}) ' \
+            'FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
+            f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
+        data = (year, year)
+        return sql, data
+
 
 class ManagerGraphs(Queries):
     colors = {
