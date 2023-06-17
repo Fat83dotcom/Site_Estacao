@@ -198,7 +198,10 @@ class ManagerGraphs(Queries):
             'data': data,
             'backgroundColor': self.colors[physQuantity][meassure],
             'borderColor': '#000',
-            'borderWidth': 1
+            'borderWidth': 0.5,
+            'fill': 'origin',
+            'pointRadius': 1.5,
+            'cubicInterpolationMode': 'monotone',
         }
         return returnDataSet
 
