@@ -4,92 +4,113 @@
 <section class="text-center">
   <p>Seja bem vindo(a)!</p>
 </section>
-<h3 class="text-center">Estatísticas {{currentYear}}</h3>
-<div class="container-fluid text-center">
-  <div class="row">
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMaxTemp %}
-        {% if forloop.counter0 == 0%}
-          <p>Maior temperatura</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.maximo_temp_ext}}°C</p>
+<div class="accordion" id="accordionExample">
+  {% for extractYear in years %}
+
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="{{extractYear}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{extractYear}}"
+        aria-expanded="false" aria-controls="collapse{{extractYear}}">
+        <h3 class="text-center">Estatísticas {{extractYear}}</h3>
+      </button>
+    </h2>
+    <div id="collapse{{extractYear}}" class="accordion-collapse collapse" aria-labelledby="{{extractYear}}"
+      data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        {% for i in data %}
+        {% if extractYear == i.year%}
+        <div class="container-fluid text-center">
+          <div class="row">
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMaxTemp %}
+              {% if forloop.counter0 == 0%}
+              <p>Maior temperatura</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.maximo_temp_ext}}°C</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMinTemp %}
+              {% if forloop.counter0 == 0%}
+              <p>Menor temperatura</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.minimo_temp_ext}}°C</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMeanTemp %}
+              {% if forloop.counter0 == 0%}
+              <p>Temperatura média</p>
+              <p>{{data.avg|roundFilter:2}}°C</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMaxUmi %}
+              {% if forloop.counter0 == 0%}
+              <p>Maior umidade</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.maximo_umidade}}%</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMinUmi %}
+              {% if forloop.counter0 == 0%}
+              <p>Menor umidade</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.minimo_umidade}}%</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMeanUmi %}
+              {% if forloop.counter0 == 0%}
+              <p>Umidade média</p>
+              <p>{{data.avg|roundFilter:2}}%</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMaxPress %}
+              {% if forloop.counter0 == 0%}
+              <p>Maior pressão atmosférica</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.maximo_pressao}} hPa</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMinPress %}
+              {% if forloop.counter0 == 0%}
+              <p>Menor pressão atmosférica</p>
+              <p>Data: {{data.dia|date}}</p>
+              <p>{{data.minimo_pressao}} hPa</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+            <div class="col m-2 conteiner-index">
+              {% for data in i.resultMeanPress %}
+              {% if forloop.counter0 == 0%}
+              <p>Pressão atmosférica média</p>
+              <p>{{data.avg|roundFilter:2}} hPa</p>
+              {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
         {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMinTemp %}
-        {% if forloop.counter0 == 0%}
-          <p>Menor temperatura</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.minimo_temp_ext}}°C</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMeanTemp %}
-        {% if forloop.counter0 == 0%}
-          <p>Temperatura média</p>
-          <p>{{data.avg|roundFilter:2}}°C</p>
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMaxUmi %}
-        {% if forloop.counter0 == 0%}
-          <p>Maior umidade</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.maximo_umidade}}%</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMinUmi %}
-        {% if forloop.counter0 == 0%}
-          <p>Menor umidade</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.minimo_umidade}}%</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMeanUmi %}
-        {% if forloop.counter0 == 0%}
-          <p>Umidade média</p>
-          <p>{{data.avg|roundFilter:2}}%</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMaxPress %}
-        {% if forloop.counter0 == 0%}
-          <p>Maior pressão atmosférica</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.maximo_pressao}} hPa</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMinPress %}
-        {% if forloop.counter0 == 0%}
-          <p>Menor pressão atmosférica</p>
-          <p>Data: {{data.dia|date}}</p>
-          <p>{{data.minimo_pressao}} hPa</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-    <div class="col m-2 conteiner-index">
-      {% for data in resultMeanPress %}
-        {% if forloop.counter0 == 0%}
-          <p>Pressão atmosférica média</p>
-          <p>{{data.avg|roundFilter:2}} hPa</p>
-        {% endif %}
-      {% endfor %}
-    </div>
-  </div>
+  {% endfor %}
 </div>
 
 {% endblock content %}
