@@ -573,9 +573,25 @@ class IndexEstatisticsManager(Queries):
                 'resultMaxPress': resultMaxPress,
                 'resultMinPress': resultMinPress,
                 'resultMeanPress': resultMeanPress,
-                'currentYear': currentYear,
-                'counter': counter,
             }
+            return result
+        except Exception as e:
+            raise e
+
+
+class PageIndexView(View, IndexEstatisticsManager):
+    template_name = 'index/index.html'
+    template_error = 'notfound/404.html'
+
+    def get(self, request):
+        try:
+            years = self.extractYears()
+            context = {
+                'years': years,
+                'data': []
+            }
+            for year in years:
+                context['data'].append(self.templateData(year))
             return render(request, self.template_name, context)
         except Exception as e:
             print(e.__class__.__name__, e)
