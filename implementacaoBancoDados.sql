@@ -166,6 +166,8 @@ dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
 
 select * from maximas_totais;
 
+SELECT DISTINCT EXTRACT(YEAR FROM dia) as ano FROM dado_diario;
+
 -- drop view medias_totais;
 
 select minimo_pressao
