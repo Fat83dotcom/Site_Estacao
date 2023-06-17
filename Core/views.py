@@ -387,6 +387,7 @@ class TablesView(Queries):
 class PagesTableMeanView(View, TablesView):
     template_name = 'registros/tabela/meantable.html'
     action_url = "/registros/tabela/medias"
+    pageName = 'Médias'
     checkDict: dict = {
         'umi': 1,
         'press': 1,
@@ -396,16 +397,19 @@ class PagesTableMeanView(View, TablesView):
 
     def get(self, request):
         template, context = self.tableGet(request, 30)
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
         template, context = self.tablePost(request, 'medias')
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
 
 class PagesTablesMaxView(View, TablesView):
     template_name = 'registros/tabela/maxtable.html'
     action_url = "/registros/tabela/maximos"
+    pageName = 'Máximas'
     checkDict: dict = {
         'umi': 1,
         'press': 1,
@@ -415,16 +419,19 @@ class PagesTablesMaxView(View, TablesView):
 
     def get(self, request):
         template, context = self.tableGet(request, 30)
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
         template, context = self.tablePost(request, 'maximas')
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
 
 class PagesTablesMinView(View, TablesView):
     template_name = 'registros/tabela/mintable.html'
     action_url = "/registros/tabela/minimos"
+    pageName = 'Mínimas'
     checkDict: dict = {
         'umi': 1,
         'press': 1,
@@ -434,16 +441,19 @@ class PagesTablesMinView(View, TablesView):
 
     def get(self, request):
         template, context = self.tableGet(request, 30)
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
         template, context = self.tablePost(request, 'minimas')
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
 
 class PagesTablesMedianView(View, TablesView):
     template_name = 'registros/tabela/mediantable.html'
     action_url = "/registros/tabela/medianas"
+    pageName = 'Medianas'
     checkDict: dict = {
         'umi': 1,
         'press': 1,
@@ -453,16 +463,19 @@ class PagesTablesMedianView(View, TablesView):
 
     def get(self, request):
         template, context = self.tableGet(request, 30)
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
         template, context = self.tablePost(request, 'medianas')
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
 
 class PagesTablesModeView(View, TablesView):
     template_name = 'registros/tabela/modetable.html'
     action_url = "/registros/tabela/modas"
+    pageName = 'Modas'
     checkDict: dict = {
         'umi': 1,
         'press': 1,
@@ -472,36 +485,44 @@ class PagesTablesModeView(View, TablesView):
 
     def get(self, request):
         template, context = self.tableGet(request, 30)
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
         template, context = self.tablePost(request, 'modas')
+        context.update({'pageName': self.pageName})
         return render(request, template, context)
 
 
 class PagesGraphsViewBar(View, GraphsView):
     template_name = 'registros/graficos/bargraphs.html'
     action_url = '/registros/graficos/barra'
+    pageName = 'Gráfico de Barras'
 
     def get(self, request):
         template_name, context = self.graphGet(self.nDaysTurnBack)
+        context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
     def post(self, request):
         template_name, context = self.graphPost(request)
+        context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
 
 class PagesGraphsViewLine(View, GraphsView):
     template_name = 'registros/graficos/linegraphs.html'
     action_url = '/registros/graficos/linha'
+    pageName = 'Gráfico de Linhas'
 
     def get(self, request):
         template_name, context = self.graphGet(self.nDaysTurnBack)
+        context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
     def post(self, request):
         template_name, context = self.graphPost(request)
+        context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
 
@@ -585,6 +606,7 @@ class IndexEstatisticsManager(Queries):
 class PageIndexView(View, IndexEstatisticsManager):
     template_name = 'index/index.html'
     template_error = 'notfound/404.html'
+    pageName = 'Home'
 
     def get(self, request):
         try:
@@ -595,6 +617,7 @@ class PageIndexView(View, IndexEstatisticsManager):
             }
             for year in years:
                 context['data'].append(self.templateData(year))
+            context.update({'pageName': self.pageName})
             return render(request, self.template_name, context)
         except Exception as e:
             print(e.__class__.__name__, e)
@@ -604,10 +627,13 @@ class PageIndexView(View, IndexEstatisticsManager):
 class PageAboutView(View):
     template_name = 'sobre/sobre.html'
     template_error = 'notfound/404.html'
+    pageName = 'Sobre'
 
     def get(self, request):
         try:
-            return render(request, self.template_name)
+            context = {}
+            context.update({'pageName': self.pageName})
+            return render(request, self.template_name, context)
         except Exception:
             return render(request, self.template_error)
 
@@ -615,6 +641,7 @@ class PageAboutView(View):
 class PageMainRegisters(View, Queries):
     template_name = 'registros/menuRegistros.html'
     template_error = 'notfound/404.html'
+    pageName = 'Registros'
 
     def get(self, request):
         try:
@@ -623,35 +650,49 @@ class PageMainRegisters(View, Queries):
             context = {
                 'dateToday': dateToday,
             }
+            context.update({'pageName': self.pageName})
             return render(request, self.template_name, context)
         except Exception:
             return render(request, self.template_error)
 
     def post(self, request):
-        return render(request, self.template_error)
+        context = {}
+        context.update({'pageName': self.pageName})
+        return render(request, self.template_error, context)
 
 
 class PageMainTables(View):
     template_name = 'registros/tabela/tabela.html'
     template_error = 'notfound/404.html'
+    pageName = 'Tabelas'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = {}
+        context.update({'pageName': self.pageName})
+        return render(request, self.template_name, context)
 
     def post(self, request):
-        return render(request, self.template_error)
+        context = {}
+        context.update({'pageName': self.pageName})
+        return render(request, self.template_error, context)
 
 
 class PageMainGraphs(View):
     template_name = 'registros/graficos/grafico.html'
     template_error = 'notfound/404.html'
+    pageName = 'Gráficos'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = {}
+        context.update({'pageName': self.pageName})
+        return render(request, self.template_name, context)
 
 
 class PageError(View):
     template_name = 'notfound/404.html'
+    pageName = 'Erro'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = {}
+        context.update({'pageName': self.pageName})
+        return render(request, self.template_name, context)
