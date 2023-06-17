@@ -29,8 +29,6 @@ class DateManager:
         queryDate = date(yearYesterday, monthYesterday, dayYesterday)
         return queryDate
 
-
-class Queries(DateManager):
     def _retroactiveDate(self, numberDaysTurnBack: int):
         dateToday = str(datetime.now(timezone('America/Sao_Paulo')))
         dateYesterday = datetime.strptime(
@@ -42,6 +40,8 @@ class Queries(DateManager):
         queryDate = date(yearYesterday, monthYesterday, dayYesterday)
         return queryDate
 
+
+class Queries(DateManager):
     def queryDateYesterday(self) -> tuple:
         sql = 'SELECT * FROM dado_diario WHERE dia=%s'
         data: tuple = (f"{self._dateYesterday()} 00:00:00", )
@@ -86,7 +86,8 @@ class Queries(DateManager):
         collumn: str,
         ordering='DESC'
     ) -> tuple:
-        sql = f'SELECT codigo, {collumn} FROM {viewBdType} WHERE dia BETWEEN %s AND %s' \
+        sql = f'SELECT codigo, {collumn} ' \
+            f'FROM {viewBdType} WHERE dia BETWEEN %s AND %s' \
             f' ORDER BY dia {ordering}'
         data: tuple = (dateStart, dateEnd)
         return (sql, data)
@@ -97,7 +98,8 @@ class Queries(DateManager):
         currentYear = str(self.currentYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
-            f'(SELECT MAX({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
+            f'(SELECT MAX({collumn}) ' \
+            f'FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
             f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
         data: tuple = (currentYear, currentYear)
         return (sql, data)
@@ -108,7 +110,8 @@ class Queries(DateManager):
         currentYear = str(self.currentYear())
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
-            f'(SELECT MIN({collumn}) FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
+            f'(SELECT MIN({collumn}) ' \
+            f'FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s) AND' \
             f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
         data: tuple = (currentYear, currentYear)
         return (sql, data)
