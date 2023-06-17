@@ -123,6 +123,12 @@ class Queries(DateManager):
         data: tuple = (currentYear, )
         return (sql, data)
 
+    def queryFilterMeanByYear(self, year: str, collumn: str):
+        sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
+            ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
+        data: tuple = (year, )
+        return (sql, data)
+
     def queryFilterDateRange(
         self, dateStart: str,
         dateEnd: str,
