@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import DadoDiario, Pictures
 
-# Register your models here.
+
+@admin.register(DadoDiario)
+class DadoDiarioAdmin(admin.ModelAdmin):
+    ...
+
+
+@admin.register(Pictures)
+class PicturesAdmin(admin.ModelAdmin):
+    ...
