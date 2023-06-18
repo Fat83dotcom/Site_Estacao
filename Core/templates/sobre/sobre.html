@@ -1,6 +1,135 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="text-center">
-    <p>Aqui vai informações sobre a estação</p>
-</section>
+<div class="wrapper conteiner-fluid">
+    {%include 'partials/aboutmenu.html'%}
+    <div id="page-content-wrapper">
+        <div class="conteiner-fluid">
+            <section class="text-start">
+                <article id="1" class="conteiner-index m-4 p-3">
+                    <h2>O que é a Estação?</h2>
+                    <p class="p-3">
+                        A estação meteorológica BrainStorm tecnologia é um projeto baseado em Arduíno, desenvolvido pela
+                        mente criativa de Fernando Mendes, estudante em Análise e Desenvolvimento de Sistemas. Esse
+                        projeto de baixo custo e de código aberto tem como objetivo monitorar eventos climáticos em
+                        tempo real, fornecendo dados precisos para análises do comportamento do clima em uma determinada
+                        região.
+                    </p>
+                </article>
+                <article id="3" class="conteiner-index m-4 p-3">
+                    <h2>O Arduíno</h2>
+                    <p class="p-3">
+                        A estação utiliza diversos sensores, como o sensor BME280, capaz de captar temperatura, umidade
+                        e pressão em um mesmo chip, e o termistor NTC 10k, um resistor que varia sua resistência
+                        elétrica de acordo com a temperatura ambiente. Esses sensores são conectados ao <a
+                            href="https://github.com/Fat83dotcom/Estacao_Arduino_Nano" target="_blank"
+                            rel="noopener noreferrer">Arduíno Nano</a> e
+                        montados em uma protoboard. Além disso, a estação conta com um visor OLED 128x64 para
+                        visualização dos dados.
+                    </p>
+                    <div class="text-center">
+                        {% for i in pic %}
+                        {% if i.name == 'sensor' %}
+                            <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                        {% endif %}
+                        {% endfor %}
+                        {% for i in pic %}
+                            {% if i.name == 'arduino' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                
+                </article>
+                <article id="4" class="conteiner-index m-4 p-3">
+                    <h2>A Interface Gráfica</h2>
+                    <p class="p-3">
+                        A interface gráfica do programa é simples e intuitiva, permitindo ao administrador da estação
+                        configurar o envio de e-mails periódicos com os dados atualizados. Além disso, o programa
+                        oferece um painel que exibe em tempo real o andamento do envio dos e-mails e os dados captados.
+                    </p>
+                    <p class="p-3">
+                        A versão atual, que pode ser encontrada <a
+                            href="https://github.com/Fat83dotcom/PYTHON_INTERFACE_ESTACAO" target="_blank"
+                            rel="noopener noreferrer">aqui</a>
+                        <link>, é estável e ocupa pouca memória, mesmo armazenando um cache de dados, conforme o tempo
+                        definido para os e-mails.
+                        Os e-mails contem informações entre os períodos de médias, máximas e mínimas com gráficos anexos
+                        em pdf mostrando segundo a segundo os registros.
+                    </p>
+                    <div class="text-center">
+                        {% for i in pic %}
+                            {% if i.name == 'interface_1' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                        {% for i in pic %}
+                            {% if i.name == 'interface_2' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                        {% for i in pic %}
+                            {% if i.name == 'interface_3' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                        {% for i in pic %}
+                            {% if i.name == 'interface_4' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </article>
+                <article id="5" class="conteiner-index m-4 p-3">
+                    <h2>A Captação</h2>
+                    <p class="p-3">
+                        A captação dos dados é realizada de forma contínua, com os sensores enviando informações para o
+                        Arduíno através de uma conexão serial. O Arduíno, por sua vez, responde às solicitações do
+                        programa em Python, que atua como cliente, buscando os dados atualizados a cada segundo. Esses
+                        dados são então gravados em arquivos .csv, organizados por mês/ano, no servidor local.
+                    </p>
+                    <p class="p-3">
+                        Diariamente, à meia-noite, um <a
+                            href="https://github.com/Fat83dotcom/Algoritmo_Extracao_Dados_Estacao_Diario"
+                            target="_blank" rel="noopener noreferrer">algoritmo</a> é acionado para tratar os dados do
+                        dia anterior. Esse
+                        algoritmo realiza análises estatísticas básicas, como média, máxima, mínima, mediana e moda, e
+                        salva um resumo dessas informações em um banco de dados localizado em um servidor remoto.
+                    </p>
+                </article>
+                <article id="6" class="conteiner-index m-4 p-3">
+                    <h2>A Exibição</h2>
+                    <p class="p-3">
+                        Para visualizar os dados armazenados, o projeto utiliza um aplicativo WEB desenvolvido com o
+                        framework Django. O aplicativo oferece duas formas de exibição dos dados: através de tabelas,
+                        onde é possível aplicar filtros para facilitar a visualização, e através de gráficos, que são
+                        uma forma eficiente de analisar as informações. Essa interface amigável proporciona uma
+                        experiência intuitiva ao usuário.
+                    </p>
+                    <div class="text-center">
+                        {% for i in pic %}
+                            {% if i.name == 'arquitetura' %}
+                                <img src="{{i.picture.url}}" class="img-thumbnail" alt="pic">
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </article>
+                <article id="7" class="conteiner-index m-4 p-3">
+                    <h2>Sobre o Projeto</h2>
+                    <p class="p-3">
+                        Todo o código-fonte e informações técnicas sobre o projeto estão disponíveis no <a
+                            href="https://github.com/Fat83dotcom" target="_blank" rel="noopener noreferrer">perfil do
+                            Github</a>
+                        de Fernando Mendes. O projeto está em constante evolução e pode passar por atualizações e
+                        melhorias no futuro.
+                    </p>
+                    <p class="p-3">
+                        Com sua simplicidade, funcionalidade e confiabilidade, a estação meteorológica BrainStorm
+                        tecnologia se torna uma ferramenta útil para a comunidade, possibilitando análises detalhadas do
+                        clima em diferentes regiões.
+                    </p>
+                </article>
+            </section>
+        </div>
+    </div>
+</div>
 {% endblock content %}
