@@ -12,7 +12,7 @@ body{
 }
 body, html{height: 100%;}
 nav a{
-    margin-left: 40px;
+    margin: 5px;
 }
 .header{
     padding: 20px;
