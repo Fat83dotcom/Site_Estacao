@@ -1,5 +1,9 @@
 from django.urls import path
 from Core import views
+from django.conf.urls.static import static
+from django.conf import settings
+
+
 
 urlpatterns = [
     path('', views.PageIndexView.as_view(), name='index'),
@@ -48,3 +52,5 @@ urlpatterns = [
     path('sobre/', views.PageAboutView.as_view(), name='sobre'),
     path('error/', views.PageError.as_view(), name='error'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
