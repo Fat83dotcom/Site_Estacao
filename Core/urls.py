@@ -4,7 +4,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 
-
 urlpatterns = [
     path('', views.PageIndexView.as_view(), name='index'),
     path('registros/', views.PageMainRegisters.as_view(), name='registros'),
