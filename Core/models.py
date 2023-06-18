@@ -28,3 +28,14 @@ class DadoDiario(models.Model):
     class Meta:
         managed = False
         db_table = 'dado_diario'
+
+    def __str__(self):
+        return f'{self.dia}'
+
+
+class Pictures(models.Model):
+    name = models.CharField(max_length=20, default='pic')
+    picture = models.ImageField(upload_to='pic')
+
+    def __str__(self) -> str:
+        return f'{self.name}'
