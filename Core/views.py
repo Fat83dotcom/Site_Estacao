@@ -1,6 +1,6 @@
 from pytz import timezone
 from django.views import View
-from .models import DadoDiario
+from .models import DadoDiario, Pictures
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from datetime import date, datetime, timedelta
@@ -631,7 +631,8 @@ class PageAboutView(View):
 
     def get(self, request):
         try:
-            context = {}
+            pic = Pictures.objects.all()
+            context = {'pic': pic, }
             context.update({'pageName': self.pageName})
             return render(request, self.template_name, context)
         except Exception:
