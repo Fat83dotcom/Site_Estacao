@@ -102,3 +102,6 @@ nav a{
     position: sticky;
     top: 0;
 }
+.about-section a{
+    color: var(--icon-color);
+}
