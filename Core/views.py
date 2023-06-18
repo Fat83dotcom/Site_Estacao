@@ -168,6 +168,7 @@ class ManagerGraphs(Queries):
             'medias': 'rgba(219, 211, 27, 0.6)',
             'medianas': 'rgba(156, 149, 19, 0.6)',
             'modas': 'rgba(194, 185, 23, 0.6)',
+            'unity': '%',
         },
         'Pressao': {
             'maximas': 'rgba(22, 92, 50, 0.6)',
@@ -175,6 +176,7 @@ class ManagerGraphs(Queries):
             'medias': 'rgba(37, 156, 85, 0.6)',
             'medianas': 'rgba(53, 219, 119, 0.6)',
             'modas': 'rgba(47, 194, 105, 0.6)',
+            'unity': 'hPa',
         },
         'Temperatura-Interna': {
             'maximas': 'rgba(36, 34, 92, 0.6)',
@@ -182,6 +184,7 @@ class ManagerGraphs(Queries):
             'medias': 'rgba(61, 58, 156, 0.6)',
             'medianas': 'rgba(86, 82, 219, 0.6)',
             'modas': 'rgba(76, 72, 194, 0.6)',
+            'unity': '°C',
         },
         'Temperatura-Externa': {
             'maximas': 'rgba(92, 17, 13, 0.6',
@@ -189,6 +192,7 @@ class ManagerGraphs(Queries):
             'medias': 'rgba(156, 28, 22, 0.6)',
             'medianas': 'rgba(220, 41, 31, 0.6)',
             'modas': 'rgba(194, 35, 27, 0.6)',
+            'unity': '°C',
         }
     }
 
@@ -320,7 +324,8 @@ class GraphsView(ManagerGraphs):
                     )
                     dTS = self.graph(physQuantity, i, data)
                     dataSets.append(dTS)
-            graphTitle = f'De {dateStart} até {dateEnd} : {physQuantity}'
+            graphTitle = f'De {dateStart} até {dateEnd} : ' \
+                f'{physQuantity} {self.colors[physQuantity]["unity"]}'
             context = {
                 'dataSets': dataSets,
                 'labels': labels,
