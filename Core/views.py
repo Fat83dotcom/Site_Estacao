@@ -546,7 +546,7 @@ class IndexEstatisticsManager(Queries):
                 year,
                 'maximo_temp_ext',
                 'MAX',
-                'ASC'
+                'DESC'
             )
             resultMaxTemp = DadoDiario.objects.raw(sql, data)
 
@@ -554,7 +554,7 @@ class IndexEstatisticsManager(Queries):
                 year,
                 'minimo_temp_ext',
                 'MIN',
-                'ASC'
+                'DESC'
             )
             resultMinTemp = DadoDiario.objects.raw(sql, data)
             sql, data = self.queryFilterMeanByYear(year, 'media_temp_ext')
@@ -563,14 +563,14 @@ class IndexEstatisticsManager(Queries):
                 year,
                 'maximo_umidade',
                 'MAX',
-                'ASC'
+                'DESC'
             )
             resultMaxUmi = DadoDiario.objects.raw(sql, data)
             sql, data = self.queryFilterMeassureByYear(
                 year,
                 'minimo_umidade',
                 'MIN',
-                'ASC'
+                'DESC'
             )
             resultMinUmi = DadoDiario.objects.raw(sql, data)
             sql, data = self.queryFilterMeanByYear(year, 'media_umidade')
@@ -586,7 +586,7 @@ class IndexEstatisticsManager(Queries):
                 year,
                 'minimo_pressao',
                 'MIN',
-                'ASC'
+                'DESC'
             )
             resultMinPress = DadoDiario.objects.raw(sql, data)
             sql, data = self.queryFilterMeanByYear(year, 'media_pressao')
