@@ -611,7 +611,7 @@ class IndexEstatisticsManager(Queries):
 class PageIndexView(View, IndexEstatisticsManager):
     template_name = 'index/index.html'
     template_error = 'notfound/404.html'
-    pageName = 'Home'
+    pageName = 'BrainStorm Tecnologia'
 
     def get(self, request):
         try:
