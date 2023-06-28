@@ -1,8 +1,23 @@
 -- Active: 1686355749375@@129.148.57.149@5432@dados_estacao
 
+-- ********************** Implementações Obrigatórias - Modelo Físico **********************
+
 select current_database();
 
 create database dados_estacao;
+
+-- ********************** Schema tabelas_horarias **********************
+
+create schema tabelas_horarias;
+
+-- SELECT pg_get_serial_sequence('dado_diario', 'codigo');
+
+-- SELECT last_value - 1 AS last_primary_key
+-- FROM public.dado_diario_codigo_seq;
+
+select codigo from dado_diario order by codigo desc limit 1;
+
+-- ********************** Schema public **********************
 
 create table
     dado_diario (
@@ -29,6 +44,17 @@ create table
         mediana_temp_ext double precision not null,
         moda_temp_ext double precision not null
     );
+	
+CREATE TABLE IF NOT EXISTS tabelas_horarias."dd-mm-aaaa" 
+    (codigo serial not null primary key,
+    codigo_dado_diario bigint not null default 1180,
+    data_hora timestamp not null unique,
+    umidade double precision null,
+    pressao double precision null,
+    temp_int double precision null,
+    temp_ext double precision null,
+    FOREIGN KEY (codigo_dado_diario) REFERENCES dado_diario (codigo)
+	);
 
 CREATE OR REPLACE VIEW MEDIAS_DIARIAS 
 	as
@@ -159,14 +185,21 @@ ORDER BY dia DESC;
 
 SELECT AVG(media_temp_ext) FROM
 dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+
 SELECT AVG(media_umidade) FROM
 dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+
 SELECT AVG(media_pressao) FROM
 dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
 
-select * from maximas_totais;
-
 SELECT DISTINCT EXTRACT(YEAR FROM dia) as ano FROM dado_diario;
+
+SELECT 0 AS id, AVG(maximo_umidade) FROM
+dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+
+-- ********************** Testes Abaixo **********************
+
+select * from maximas_totais;
 
 -- drop view medias_totais;
 
@@ -196,5 +229,16 @@ select * from dado_diario where dia BETWEEN '2022-01-01' AND '2022-04-01';
 
 show datastyle;
 
-SELECT 0 AS id, AVG(maximo_umidade) FROM
-dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
+select * from dado_diario;
+
+
+
+create table teste(
+	codigo serial not null primary key,
+	nome varchar null
+);
+
+select * from tabelas_horarias."25-06-2023";
+
+
+select * from teste;
