@@ -39,12 +39,12 @@ urlpatterns = [
         name='graficos'
     ),
     path(
-        'registros/graficos/barra',
+        'registros/graficos/barra/<str:nameGraph>',
         views.PagesGraphsViewBar.as_view(),
         name='barra'
     ),
     path(
-        'registros/graficos/linha',
+        'registros/graficos/linha/<str:nameGraph>',
         views.PagesGraphsViewLine.as_view(),
         name='linha'
     ),
