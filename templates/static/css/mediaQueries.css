@@ -21,7 +21,7 @@
         align-items: center;
         justify-content: space-around;
         flex-direction: row;
-        font-size: 7px;
+        font-size: 10px;
     }
     .sidebar-var-form{
         display: flex;
