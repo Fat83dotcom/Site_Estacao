@@ -502,38 +502,38 @@ class PagesTablesModeView(View, TablesView):
 class PagesGraphsViewBar(View, GraphsView):
     template_name = 'registros/graficos/bargraphs.html'
     action_url = '/registros/graficos/barra'
-    pageName = 'Gráfico de Barras'
+    pageName = 'Gráfico de '
 
-    def get(self, request, nameGraph):
+    def get(self, request, graphName):
         template_name, context = self.graphGet(
-            nameGraph,
+            graphName,
             self.nDaysTurnBack
         )
-        context.update({'pageName': self.pageName})
+        context.update({'pageName': f'{self.pageName}{graphName}'})
         return render(request, template_name, context)
 
-    def post(self, request):
+    def post(self, request, graphName):
         template_name, context = self.graphPost(request)
-        context.update({'pageName': self.pageName})
+        context.update({'pageName': f'{self.pageName}{graphName}'})
         return render(request, template_name, context)
 
 
 class PagesGraphsViewLine(View, GraphsView):
     template_name = 'registros/graficos/linegraphs.html'
     action_url = '/registros/graficos/linha'
-    pageName = 'Gráfico de Linhas'
+    pageName = 'Gráfico de '
 
-    def get(self, request, nameGraph):
+    def get(self, request, graphName):
         template_name, context = self.graphGet(
-            nameGraph,
+            graphName,
             self.nDaysTurnBack
         )
-        context.update({'pageName': self.pageName})
+        context.update({'pageName': f'{self.pageName}{graphName}'})
         return render(request, template_name, context)
 
-    def post(self, request):
+    def post(self, request, graphName):
         template_name, context = self.graphPost(request)
-        context.update({'pageName': self.pageName})
+        context.update({'pageName': f'{self.pageName}{graphName}'})
         return render(request, template_name, context)
 
 
