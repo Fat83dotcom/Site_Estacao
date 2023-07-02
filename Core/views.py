@@ -277,7 +277,7 @@ class GraphsView(ManagerGraphs):
     meassures = ['medias', 'maximas', 'minimas', 'medianas', 'modas']
     nDaysTurnBack = 30
 
-    def graphGet(self, numberDaysTurnBack: int):
+    def graphGet(self, graphName: str, numberDaysTurnBack: int):
         startDate = self._retroactiveDate(numberDaysTurnBack)
         endDate = self._retroactiveDate(1)
         dataSets: list = []
@@ -290,7 +290,7 @@ class GraphsView(ManagerGraphs):
             )
             dTS = self.graph('Temperatura-Externa', i, data)
             dataSets.append(dTS)
-        graphType = 'Gráfico de Barras - ' + \
+        graphType = f'Gráfico de {graphName} - ' + \
             f'Temperatura dos Últimos {numberDaysTurnBack} dias.'
         context = {
             'dataSets': dataSets,
@@ -504,8 +504,11 @@ class PagesGraphsViewBar(View, GraphsView):
     action_url = '/registros/graficos/barra'
     pageName = 'Gráfico de Barras'
 
-    def get(self, request):
-        template_name, context = self.graphGet(self.nDaysTurnBack)
+    def get(self, request, nameGraph):
+        template_name, context = self.graphGet(
+            nameGraph,
+            self.nDaysTurnBack
+        )
         context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
@@ -520,8 +523,11 @@ class PagesGraphsViewLine(View, GraphsView):
     action_url = '/registros/graficos/linha'
     pageName = 'Gráfico de Linhas'
 
-    def get(self, request):
-        template_name, context = self.graphGet(self.nDaysTurnBack)
+    def get(self, request, nameGraph):
+        template_name, context = self.graphGet(
+            nameGraph,
+            self.nDaysTurnBack
+        )
         context.update({'pageName': self.pageName})
         return render(request, template_name, context)
 
