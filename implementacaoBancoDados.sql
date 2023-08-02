@@ -17,9 +17,18 @@ create schema tabelas_horarias;
 
 select codigo from dado_diario order by codigo desc limit 1;
 
+CREATE TABLE IF NOT EXISTS "tabelas_horarias"."dd-mm-aaaa" 
+    (codigo serial not null primary key,
+    data_hora timestamp not null unique,
+    umidade double precision null,
+    pressao double precision null,
+    temp_int double precision null,
+    temp_ext double precision null
+	);
+
 -- ********************** Schema public **********************
 
-create table
+CREATE TABLE
     dado_diario (
         codigo serial not null primary key,
         dia timestamp not null unique,
@@ -44,17 +53,6 @@ create table
         mediana_temp_ext double precision not null,
         moda_temp_ext double precision not null
     );
-	
-CREATE TABLE IF NOT EXISTS tabelas_horarias."dd-mm-aaaa" 
-    (codigo serial not null primary key,
-    codigo_dado_diario bigint not null default 1180,
-    data_hora timestamp not null unique,
-    umidade double precision null,
-    pressao double precision null,
-    temp_int double precision null,
-    temp_ext double precision null,
-    FOREIGN KEY (codigo_dado_diario) REFERENCES dado_diario (codigo)
-	);
 
 CREATE OR REPLACE VIEW MEDIAS_DIARIAS 
 	as
@@ -231,14 +229,47 @@ show datastyle;
 
 select * from dado_diario;
 
-
-
 create table teste(
 	codigo serial not null primary key,
 	nome varchar null
 );
 
-select * from tabelas_horarias."25-06-2023";
+select * from tabelas_horarias."17-07-2023";
+
+drop schema dado_horario
+
+select * from "tabelas_horarias"."25-07-2023" order by codigo desc;
+
+-- delete from "tabelas_horarias"."25-07-2023" where temp_int > 35;
+
+CREATE TABLE IF NOT EXISTS "tabelas_horarias"."15-07-2023"(
+            codigo serial not null PRIMARY KEY,
+            data_hora timestamp not null UNIQUE,
+            umidade double precision null,
+            pressao double precision null,
+            temp_int double precision null,
+            temp_ext double precision null
+            );
+
+select * from dado_diario where codigo='1212';
 
 
-select * from teste;
+select codigo, data_hora, temp_ext from "tabelas_horarias"."25-07-2023" 
+where temp_ext=(select max(temp_ext) from "tabelas_horarias"."25-07-2023");
+
+select * from "tabelas_horarias"."26-07-2023" order by codigo desc;
+
+
+select count(*) from "tabelas_horarias"."25-07-2023";
+
+
+select * from "tabelas_horarias"."27-07-2023"
+where data_hora between '2023-07-27 23:00:00' and '2023-07-27 23:59:59'
+union all
+select * from "tabelas_horarias"."28-07-2023"
+where data_hora between '2023-07-28 00:00:00' and '2023-07-28 23:59:59'
+union all
+select * from "tabelas_horarias"."29-07-2023"
+where data_hora between '2023-07-29 00:00:00' and '2023-07-29 01:30:59'
+order by data_hora asc
+
