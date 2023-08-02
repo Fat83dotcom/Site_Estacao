@@ -226,7 +226,6 @@ class ManagerGraphs(Queries):
                 extractData.append(collumnValue)
             return extractData
         except Exception as e:
-            print(e)
             raise e
 
     def labelGraph(self, dateStart: str, dateEnd: str) -> list:
