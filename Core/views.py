@@ -116,14 +116,14 @@ class Queries(DateManager):
         data: tuple = (currentYear, currentYear)
         return (sql, data)
 
-    def queryFilterMeanByCurrentYear(self, collumn: str):
+    def queryFilterMeanByCurrentYear(self, collumn: str) -> tuple:
         currentYear = self.currentYear()
         sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
             ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
         data: tuple = (currentYear, )
         return (sql, data)
 
-    def queryFilterMeanByYear(self, year: str, collumn: str):
+    def queryFilterMeanByYear(self, year: str, collumn: str) -> tuple:
         sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
             ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
         data: tuple = (year, )
@@ -150,7 +150,7 @@ class Queries(DateManager):
             self, year: str,
             collumn: str,
             functionSQL: str,
-            ordering: str):
+            ordering: str) -> tuple:
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT {functionSQL}({collumn}) ' \
