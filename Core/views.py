@@ -659,6 +659,10 @@ class IndexEstatisticsManager(Queries):
             raise e
 
 
+class IndexGraphManager(GraphsView):
+    pass
+
+
 class PageIndexView(View, IndexEstatisticsManager):
     template_name = 'index/index.html'
     template_error = 'notfound/404.html'
