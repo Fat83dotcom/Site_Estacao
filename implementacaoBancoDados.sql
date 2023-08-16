@@ -53,6 +53,11 @@ CREATE TABLE
         mediana_temp_ext double precision not null,
         moda_temp_ext double precision not null
     );
+	
+CREATE TABLE gerenciador_tabelas_horarias(
+	codigo SERIAL PRIMARY KEY,
+	data_tabela DATE NOT NULL UNIQUE
+);
 
 CREATE OR REPLACE VIEW MEDIAS_DIARIAS 
 	as
@@ -253,6 +258,7 @@ CREATE TABLE IF NOT EXISTS "tabelas_horarias"."15-07-2023"(
 
 select * from dado_diario where codigo='1212';
 
+select * from gerenciador_tabelas_horarias
 
 select codigo, data_hora, temp_ext from "tabelas_horarias"."25-07-2023" 
 where temp_ext=(select max(temp_ext) from "tabelas_horarias"."25-07-2023");
@@ -273,3 +279,33 @@ select * from "tabelas_horarias"."29-07-2023"
 where data_hora between '2023-07-29 00:00:00' and '2023-07-29 01:30:59'
 order by data_hora asc
 
+
+SELECT 
+    *
+FROM 
+    "tabelas_horarias"."27-07-2023"
+WHERE 
+    (EXTRACT(MINUTE FROM data_hora)=0 or EXTRACT(MINUTE FROM data_hora)=30)
+	and
+	EXTRACT(Second FROM data_hora)=0
+union
+SELECT 
+    *
+FROM 
+    "tabelas_horarias"."28-07-2023"
+WHERE 
+    (EXTRACT(MINUTE FROM data_hora)=0 or EXTRACT(MINUTE FROM data_hora)=30)
+	and
+	EXTRACT(Second FROM data_hora)=0
+	union
+SELECT 
+    *
+FROM 
+    "tabelas_horarias"."29-07-2023"
+WHERE 
+    (EXTRACT(MINUTE FROM data_hora)=0 or EXTRACT(MINUTE FROM data_hora)=30)
+	and
+	EXTRACT(Second FROM data_hora)=0
+order by data_hora asc
+	
+SELECT name, setting FROM pg_settings WHERE name LIKE 'autovacuum%';
