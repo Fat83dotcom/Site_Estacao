@@ -39,3 +39,12 @@ class Pictures(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name}'
+
+
+class GerenciadorTabelasHorarias(models.Model):
+    codigo = models.AutoField(primary_key=True)
+    data_tabela = models.DateField(unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'gerenciador_tabelas_horarias'

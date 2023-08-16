@@ -116,14 +116,14 @@ class Queries(DateManager):
         data: tuple = (currentYear, currentYear)
         return (sql, data)
 
-    def queryFilterMeanByCurrentYear(self, collumn: str):
+    def queryFilterMeanByCurrentYear(self, collumn: str) -> tuple:
         currentYear = self.currentYear()
         sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
             ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
         data: tuple = (currentYear, )
         return (sql, data)
 
-    def queryFilterMeanByYear(self, year: str, collumn: str):
+    def queryFilterMeanByYear(self, year: str, collumn: str) -> tuple:
         sql = f'SELECT 1 AS codigo, AVG({collumn}) FROM' \
             ' dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))=%s'
         data: tuple = (year, )
@@ -150,7 +150,7 @@ class Queries(DateManager):
             self, year: str,
             collumn: str,
             functionSQL: str,
-            ordering: str):
+            ordering: str) -> tuple:
         sql = f'SELECT codigo, dia, {collumn} FROM dado_diario' \
             f' WHERE {collumn}=' \
             f'(SELECT {functionSQL}({collumn}) ' \
@@ -158,6 +158,52 @@ class Queries(DateManager):
             f' EXTRACT(YEAR FROM(SELECT dia))=%s ORDER BY dia {ordering}'
         data = (year, year)
         return sql, data
+
+    def query3LastDays(self) -> tuple:
+        dateYesterday = self._retroactiveDate(1)
+        dayBeforeYesterday = self._retroactiveDate(2)
+        oneDayBeforeYesterday = self._retroactiveDate(3)
+
+        sql = f'''
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{dateYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+        union
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{dayBeforeYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+            union
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{oneDayBeforeYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+        OREDER BY data_hora ASC
+        '''
+        data = ()
+        return sql, data
+
+    def queryMean3LastDays(self) -> tuple:
+        pass
 
 
 class ManagerGraphs(Queries):
@@ -611,6 +657,10 @@ class IndexEstatisticsManager(Queries):
             return result
         except Exception as e:
             raise e
+
+
+class IndexGraphManager(GraphsView):
+    pass
 
 
 class PageIndexView(View, IndexEstatisticsManager):

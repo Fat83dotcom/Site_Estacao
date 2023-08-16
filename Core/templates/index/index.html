@@ -4,6 +4,93 @@
 <section class="text-center">
   <p>Seja bem vindo(a)!</p>
 </section>
+<section class="text-center">
+  <h3>Tempo Real</h3>
+</section>
+<section>
+  <div id="carouselIndex" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselIndex" data-bs-slide-to="0" class="active" aria-current="true"
+        aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselIndex" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselIndex" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#carouselIndex" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="height: 100px; width: 90%;"
+            class="container-fluid text-center m-2 conteiner-index align-items-center">
+            Umidade
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="height: 100px; width: 90%;"
+            class="container-fluid text-center m-2 conteiner-index align-items-center">
+            Pressão
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="d-flex justify-content-center align-items-center">
+          <div style="height: 100px; width: 90%;"
+            class="container-fluid text-center m-2 conteiner-index align-items-center">
+            Temperatura Interna
+          </div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="x d-flex justify-content-center align-items-cent">
+          <div style="height: 100px; width: 90%;"
+            class="container-fluid text-center m-2 conteiner-index align-items-center">
+            Temperatura Externa
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndex" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndex" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+<section class="text-center">
+  <h3>Gráficos</h3>
+</section>
+<section>
+  <div class="container-fluid text-center">
+    <div class="row">
+      <div class="col m-2 conteiner-index">
+
+        <canvas id="graphLine1"></canvas>
+
+      </div>
+      <div class="col m-2 conteiner-index">
+
+        <canvas id="graphLine2"></canvas>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col m-2 conteiner-index">
+
+        <canvas id="graphLine3"></canvas>
+
+      </div>
+      <div class="col m-2 conteiner-index">
+
+        <canvas id="graphLine4"></canvas>
+
+      </div>
+    </div>
+  </div>
+</section>
 <section>
   <div class="accordion" id="accordionExample">
     {% for extractYear in years %}
@@ -112,5 +199,121 @@
     </div>
     {% endfor %}
   </div>
+</section>
+<section>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    function createRandomArray(length, min, max) {
+      const randomArray = [];
+      for (let i = 0; i < length; i++) {
+        const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+        randomArray.push(randomNum);
+      }
+      return randomArray;
+    }
+
+    function createAscendingArray(length) {
+      const ascendingArray = [];
+      for (let i = 0; i < length; i++) {
+        ascendingArray.push(i);
+      }
+      return ascendingArray;
+    }
+
+    let size = 216;
+    let labelss = createAscendingArray(size);
+
+    const ctx1 = document.getElementById('graphLine1');
+    let config1 = {
+      type: 'line',
+      data: {
+        labels: labelss,
+        datasets: [{
+          label: "Teste",
+          data: createRandomArray(size, 14, 30)
+
+        }]
+      },
+
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: value => `${value} °C`
+            }
+          }
+        }
+      }
+    };
+    new Chart(ctx1, config1);
+
+    const ctx2 = document.getElementById('graphLine2');
+    let config2 = {
+      type: 'line',
+      data: {
+        labels: labelss,
+        datasets: [{
+          label: "Teste",
+          data: createRandomArray(size, 14, 30)
+
+        }]
+      },
+
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+    new Chart(ctx2, config2);
+
+    const ctx3 = document.getElementById('graphLine3');
+    let config3 = {
+      type: 'line',
+      data: {
+        labels: labelss,
+        datasets: [{
+          label: "Teste",
+          data: createRandomArray(size, 14, 30)
+
+        }]
+      },
+
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+    new Chart(ctx3, config3);
+
+    const ctx4 = document.getElementById('graphLine4');
+    let config4 = {
+      type: 'line',
+      data: {
+        labels: labelss,
+        datasets: [{
+          label: "Teste",
+          data: createRandomArray(size, 14, 30)
+
+        }]
+      },
+
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    };
+    new Chart(ctx4, config4);
+  </script>
 </section>
 {% endblock content %}
