@@ -159,6 +159,52 @@ class Queries(DateManager):
         data = (year, year)
         return sql, data
 
+    def query3LastDays(self) -> tuple:
+        dateYesterday = self._retroactiveDate(1)
+        dayBeforeYesterday = self._retroactiveDate(2)
+        oneDayBeforeYesterday = self._retroactiveDate(3)
+
+        sql = f'''
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{dateYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+        union
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{dayBeforeYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+            union
+        SELECT
+            *
+        FROM
+            "tabelas_horarias"."{oneDayBeforeYesterday}"
+        WHERE
+            (EXTRACT(MINUTE FROM data_hora)=0
+            OR
+            EXTRACT(MINUTE FROM data_hora)=30)
+            AND
+            EXTRACT(Second FROM data_hora)=0
+        OREDER BY data_hora ASC
+        '''
+        data = ()
+        return sql, data
+
+    def queryMean3LastDays(self) -> tuple:
+        pass
+
 
 class ManagerGraphs(Queries):
     colors = {
