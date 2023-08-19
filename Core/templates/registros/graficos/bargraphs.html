@@ -23,7 +23,10 @@
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: value => `${value} {{unity|safe}}`
+                                }
                             }
                         }
                     }
