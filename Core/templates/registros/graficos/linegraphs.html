@@ -13,7 +13,6 @@
 
             <script>
                 const ctx = document.getElementById('graphLine');
-                
                 let config = {
                     type: 'line',
                     data: {
@@ -23,11 +22,14 @@
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: value => `${value} {{unity|safe}}`
+                                }
                             }
                         }
                     }
-                }
+                };
 
                 new Chart(ctx, config);
             </script>
