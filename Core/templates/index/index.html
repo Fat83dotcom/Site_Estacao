@@ -342,7 +342,7 @@
       temp2.textContent = JSON.stringify(data.temp_ext)
     }
     setInterval(() => {
-      fetch('http://www.brainstormtecnologia.tech/api/tempo_real/')
+      fetch('https://www.brainstormtecnologia.tech/api/tempo_real/')
       .then(response =>{
         if (response.status !== 200) throw new Error('Dados não encontrados')
         return response.json()
