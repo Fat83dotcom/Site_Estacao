@@ -40,6 +40,11 @@ class DateManager:
         dateToday = datetime.now(timezone('America/Sao_Paulo'))
         return dateToday.strftime('%d-%m-%Y')
 
+    def systemFormatDateYesterday(self) -> str:
+        dateToday = datetime.now(timezone('America/Sao_Paulo'))
+        dateYesterday = dateToday - timedelta(1)
+        return dateYesterday
+
 
 class Queries(DateManager):
     def queryDateYesterday(self) -> tuple:
@@ -213,6 +218,30 @@ class Queries(DateManager):
         ON gerenciador_tabelas_horarias.codigo=
         "tabelas_horarias"."{tableName}".codigo_gerenciador
         ORDER BY "tabelas_horarias"."{tableName}".codigo DESC LIMIT 1
+        '''
+        data = ()
+        return sql, data
+
+    def queryLast24Hours(self) -> tuple:
+        tableNameToday = self.systemFormatDateToday()
+        tableNameYesterday = self.systemFormatDateYesterday()
+        sql = f'''
+        SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."{tableNameToday}"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."{tableNameToday}".codigo_gerenciador
+        WHERE data_hora <= clock_timestamp()
+            AND EXTRACT(SECOND FROM data_hora) = 0
+            AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+        UNION
+        SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."{tableNameYesterday}"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."{tableNameYesterday}".codigo_gerenciador
+        WHERE data_hora >= (clock_timestamp() - INTERVAL '27 hours')
+            AND EXTRACT(SECOND FROM data_hora) = 0
+            AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+        ORDER BY data_hora;
         '''
         data = ()
         return sql, data
