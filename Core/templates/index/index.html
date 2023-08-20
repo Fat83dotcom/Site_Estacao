@@ -500,6 +500,7 @@
     }
     setInterval(() => {
       fetch('https://www.brainstormtecnologia.tech/api/tempo_real/')
+      // fetch('http://127.0.0.1:8000/api/tempo_real/')
       .then(response =>{
         if (response.status !== 200) throw new Error('Dados não encontrados')
         return response.json()
