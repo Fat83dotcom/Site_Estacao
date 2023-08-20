@@ -27,5 +27,23 @@ def lastDailyEntry(request):
         }
         for i in GerenciadorTabelasHorarias.objects.raw(sql, data)
     ]
-    serializer = LastDailyEntrySerializer(instance=result[0])
+    serializer = DailyEntrySerializer(instance=result[0])
+    return Response(serializer.data)
+
+
+@api_view()
+def last24HoursEntry(request):
+    q = Queries()
+    sql, data = q.queryLast24Hours()
+    result = [
+        {
+            'data_hora': str(i.data_hora.strftime("%d/%m/%Y %H:%M:%S")),
+            'umidade': float(i.umidade),
+            'pressao': float(i.pressao),
+            'temp_int': float(i.temp_int),
+            'temp_ext': float(i.temp_ext)
+        }
+        for i in GerenciadorTabelasHorarias.objects.raw(sql, data)
+    ]
+    serializer = DailyEntrySerializer(instance=result, many=True)
     return Response(serializer.data)
