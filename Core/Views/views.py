@@ -3,7 +3,7 @@ from Core.Queries.queriesClasses import Queries
 from Core.GraphManager.graphManagerClasses import GraphsView
 from Core.IndexManager.indexManagerClasses import IndexEstatisticsManager
 from django.shortcuts import render
-from .models import DadoDiario, Pictures
+from Core.models import DadoDiario, Pictures
 from django.core.paginator import Paginator
 
 

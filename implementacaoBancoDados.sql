@@ -1,4 +1,4 @@
--- Active: 1686355749375@@129.148.57.149@5432@dados_estacao
+-- Active: 1686355749375@@129.148.57.149@5432
 
 -- ********************** Implementações Obrigatórias - Modelo Físico **********************
 
@@ -309,3 +309,6 @@ WHERE
 order by data_hora asc
 	
 SELECT name, setting FROM pg_settings WHERE name LIKE 'autovacuum%';
+
+SELECT * FROM "tabelas_horarias"."19-08-2023"
+        ORDER BY codigo DESC LIMIT 1;
