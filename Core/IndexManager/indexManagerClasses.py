@@ -1,5 +1,6 @@
 from Core.models import DadoDiario
 from Core.Queries.queriesClasses import Queries
+from Core.GraphManager.graphManagerClasses import ManagerGraphs
 
 
 class IndexEstatisticsManager(Queries):
@@ -79,5 +80,5 @@ class IndexEstatisticsManager(Queries):
             raise e
 
 
-class IndexGraphManager():
+class IndexGraphManager(ManagerGraphs):
     pass
