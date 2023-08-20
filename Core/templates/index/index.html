@@ -24,7 +24,8 @@
             class="container-fluid text-center m-2 conteiner-index align-items-center">
             <h4>Umidade: </h4>
             <div>
-              <p id="umi" style="display: inline";>...</p><p style="display: inline";> %</p>
+              <p id="umi" style="display: inline" ;>...</p>
+              <p style="display: inline" ;> %</p>
             </div>
           </div>
         </div>
@@ -35,7 +36,8 @@
             class="container-fluid text-center m-2 conteiner-index align-items-center">
             <h4>Pressão</h4>
             <div>
-              <p id="press" style="display: inline";>...</p><p style="display: inline";> hPa</p>
+              <p id="press" style="display: inline" ;>...</p>
+              <p style="display: inline" ;> hPa</p>
             </div>
           </div>
         </div>
@@ -46,7 +48,8 @@
             class="container-fluid text-center m-2 conteiner-index align-items-center">
             <h4>Temperatura Interna: </h4>
             <div>
-              <p id="tmp1" style="display: inline";>...</p><p style="display: inline";> °C</p>
+              <p id="tmp1" style="display: inline" ;>...</p>
+              <p style="display: inline" ;> °C</p>
             </div>
           </div>
         </div>
@@ -57,7 +60,8 @@
             class="container-fluid text-center m-2 conteiner-index align-items-center">
             <h4>Temperatura Externa: </h4>
             <div class="flex-row">
-              <p id="tmp2" style="display: inline";>...</p><p style="display: inline";> °C</p>
+              <p id="tmp2" style="display: inline" ;>...</p>
+              <p style="display: inline" ;> °C</p>
             </div>
           </div>
         </div>
@@ -214,282 +218,284 @@
   </div>
 </section>
 <section>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js"></script>
   <script>
-    fetch('https://www.brainstormtecnologia.tech/api/tempo_real/')
-    // fetch('http://127.0.0.1:8000/api/graficosIndex/')
-    .then(response =>{
-      if (response.status !== 200) throw new Error('Dados não encontrados')
-      return response.json()
-    })
-    .then(data =>{
-      let labelss = []
-      let humidity  = []
-      let pressure = []
-      let tempIn = []
-      let tempEx = []
-      data.forEach(element => {
-        labelss.push(element.data_hora)
-        humidity.push(element.umidade)
-        pressure.push(element.pressao)
-        tempIn.push(element.temp_int)
-        tempEx.push(element.temp_ext)
+    const urlGraf = 'https://www.brainstormtecnologia.tech/api/tempo_real/'
+    fetch(urlRealTime)
+      // fetch('http://127.0.0.1:8000/api/graficosIndex/')
+      .then(response => {
+        if (response.status !== 200) throw new Error('Dados não encontrados')
+        return response.json()
       })
-      const ctx1 = document.getElementById('graphLineUmidade');
-      let config1 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Umidade últimas 24 Hrs",
-            data: humidity,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
+      .then(data => {
+        let labelss = []
+        let humidity = []
+        let pressure = []
+        let tempIn = []
+        let tempEx = []
+        data.forEach(element => {
+          labelss.push(element.data_hora)
+          humidity.push(element.umidade)
+          pressure.push(element.pressao)
+          tempIn.push(element.temp_int)
+          tempEx.push(element.temp_ext)
+        })
+        const ctx1 = document.getElementById('graphLineUmidade');
+        let config1 = {
+          type: 'line',
+          data: {
+            labels: labelss,
+            datasets: [{
+              label: "Umidade últimas 24 Hrs",
+              data: humidity,
+              borderWidth: 0.5,
+              fill: 'origin',
+              pointRadius: 1,
+              cubicInterpolationMode: 'monotone',
 
-          }]
-        },
+            }]
+          },
 
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} %`
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: value => `${value} %`
+                }
               }
             }
           }
-        }
-      };
-      new Chart(ctx1, config1);
+        };
+        new Chart(ctx1, config1);
 
-      const ctx2 = document.getElementById('graphLinePressao');
-      let config2 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Pressão últimas 24 Hrs",
-            data: pressure,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
+        const ctx2 = document.getElementById('graphLinePressao');
+        let config2 = {
+          type: 'line',
+          data: {
+            labels: labelss,
+            datasets: [{
+              label: "Pressão últimas 24 Hrs",
+              data: pressure,
+              borderWidth: 0.5,
+              fill: 'origin',
+              pointRadius: 1,
+              cubicInterpolationMode: 'monotone',
+            }]
+          },
 
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} hPa`
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: value => `${value} hPa`
+                }
               }
             }
           }
-        }
-      };
-      new Chart(ctx2, config2);
+        };
+        new Chart(ctx2, config2);
 
-      const ctx3 = document.getElementById('graphLineTempInt');
-      let config3 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Temperatura Interna últimas 24 Hrs",
-            data: tempIn,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',       
-          }]
-        },
+        const ctx3 = document.getElementById('graphLineTempInt');
+        let config3 = {
+          type: 'line',
+          data: {
+            labels: labelss,
+            datasets: [{
+              label: "Temperatura Interna últimas 24 Hrs",
+              data: tempIn,
+              borderWidth: 0.5,
+              fill: 'origin',
+              pointRadius: 1,
+              cubicInterpolationMode: 'monotone',
+            }]
+          },
 
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} °C`
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: value => `${value} °C`
+                }
               }
             }
           }
-        }
-      };
-      new Chart(ctx3, config3);
+        };
+        new Chart(ctx3, config3);
 
-      const ctx4 = document.getElementById('graphLineTempExt');
-      let config4 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Temperatura Externa últimas 24 Hrs",
-            data: tempEx,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
+        const ctx4 = document.getElementById('graphLineTempExt');
+        let config4 = {
+          type: 'line',
+          data: {
+            labels: labelss,
+            datasets: [{
+              label: "Temperatura Externa últimas 24 Hrs",
+              data: tempEx,
+              borderWidth: 0.5,
+              fill: 'origin',
+              pointRadius: 1,
+              cubicInterpolationMode: 'monotone',
+            }]
+          },
 
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} °C`
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  callback: value => `${value} °C`
+                }
               }
             }
           }
-        }
-      };
-      new Chart(ctx4, config4);
-      })
-    .catch(e => console.log(e))
-    
-    setInterval(() => {
-      fetch('http://127.0.0.1:8000/api/graficosIndex/')
-    .then(response =>{
-      if (response.status !== 200) throw new Error('Dados não encontrados')
-      return response.json()
-    })
-    .then(data =>{
-      let labelss = []
-      let humidity  = []
-      let pressure = []
-      let tempIn = []
-      let tempEx = []
-      data.forEach(element => {
-        labelss.push(element.data_hora)
-        humidity.push(element.umidade)
-        pressure.push(element.pressao)
-        tempIn.push(element.temp_int)
-        tempEx.push(element.temp_ext)
-      })
-      const ctx1 = document.getElementById('graphLineUmidade');
-      let config1 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Umidade últimas 24 Hrs",
-            data: humidity,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
-
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} %`
-              }
-            }
-          }
-        }
-      };
-      new Chart(ctx1, config1);
-
-      const ctx2 = document.getElementById('graphLinePressao');
-      let config2 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Pressão últimas 24 Hrs",
-            data: pressure,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
-
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} hPa`
-              }
-            }
-          }
-        }
-      };
-      new Chart(ctx2, config2);
-
-      const ctx3 = document.getElementById('graphLineTempInt');
-      let config3 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Temperatura Interna últimas 24 Hrs",
-            data: tempIn,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
-
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} °C`
-              }
-            }
-          }
-        }
-      };
-      new Chart(ctx3, config3);
-
-      const ctx4 = document.getElementById('graphLineTempExt');
-      let config4 = {
-        type: 'line',
-        data: {
-          labels: labelss,
-          datasets: [{
-            label: "Temperatura Externa últimas 24 Hrs",
-            data: tempEx,
-            borderWidth: 0.5,
-            fill: 'origin',
-            pointRadius: 1,
-            cubicInterpolationMode: 'monotone',
-          }]
-        },
-
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: {
-                callback: value => `${value} °C`
-              }
-            }
-          }
-        }
-      };
-      new Chart(ctx4, config4);
+        };
+        new Chart(ctx4, config4);
       })
       .catch(e => console.log(e))
+
+    setInterval(() => {
+      fetch(urlGraf)
+      // fetch('http://127.0.0.1:8000/api/graficosIndex/')
+        .then(response => {
+          if (response.status !== 200) throw new Error('Dados não encontrados')
+          return response.json()
+        })
+        .then(data => {
+          let labelss = []
+          let humidity = []
+          let pressure = []
+          let tempIn = []
+          let tempEx = []
+          data.forEach(element => {
+            labelss.push(element.data_hora)
+            humidity.push(element.umidade)
+            pressure.push(element.pressao)
+            tempIn.push(element.temp_int)
+            tempEx.push(element.temp_ext)
+          })
+          const ctx1 = document.getElementById('graphLineUmidade');
+          let config1 = {
+            type: 'line',
+            data: {
+              labels: labelss,
+              datasets: [{
+                label: "Umidade últimas 24 Hrs",
+                data: humidity,
+                borderWidth: 0.5,
+                fill: 'origin',
+                pointRadius: 1,
+                cubicInterpolationMode: 'monotone',
+              }]
+            },
+
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: value => `${value} %`
+                  }
+                }
+              }
+            }
+          };
+          new Chart(ctx1, config1);
+
+          const ctx2 = document.getElementById('graphLinePressao');
+          let config2 = {
+            type: 'line',
+            data: {
+              labels: labelss,
+              datasets: [{
+                label: "Pressão últimas 24 Hrs",
+                data: pressure,
+                borderWidth: 0.5,
+                fill: 'origin',
+                pointRadius: 1,
+                cubicInterpolationMode: 'monotone',
+              }]
+            },
+
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: value => `${value} hPa`
+                  }
+                }
+              }
+            }
+          };
+          new Chart(ctx2, config2);
+
+          const ctx3 = document.getElementById('graphLineTempInt');
+          let config3 = {
+            type: 'line',
+            data: {
+              labels: labelss,
+              datasets: [{
+                label: "Temperatura Interna últimas 24 Hrs",
+                data: tempIn,
+                borderWidth: 0.5,
+                fill: 'origin',
+                pointRadius: 1,
+                cubicInterpolationMode: 'monotone',
+              }]
+            },
+
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: value => `${value} °C`
+                  }
+                }
+              }
+            }
+          };
+          new Chart(ctx3, config3);
+
+          const ctx4 = document.getElementById('graphLineTempExt');
+          let config4 = {
+            type: 'line',
+            data: {
+              labels: labelss,
+              datasets: [{
+                label: "Temperatura Externa últimas 24 Hrs",
+                data: tempEx,
+                borderWidth: 0.5,
+                fill: 'origin',
+                pointRadius: 1,
+                cubicInterpolationMode: 'monotone',
+              }]
+            },
+
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    callback: value => `${value} °C`
+                  }
+                }
+              }
+            }
+          };
+          new Chart(ctx4, config4);
+        })
+        .catch(e => console.log(e))
     }, 300000);
   </script>
   <script>
+    const urlRealTime = 'https://www.brainstormtecnologia.tech/api/tempo_real/'
     const date = document.getElementById('dateNow')
     const umi = document.getElementById('umi')
     const press = document.getElementById('press')
-    const temp1= document.getElementById('tmp1')
+    const temp1 = document.getElementById('tmp1')
     const temp2 = document.getElementById('tmp2')
     const updateData = data => {
       date.textContent = JSON.stringify(data.data_hora).replace(/"/g, '')
@@ -499,16 +505,16 @@
       temp2.textContent = JSON.stringify(data.temp_ext)
     }
     setInterval(() => {
-      fetch('https://www.brainstormtecnologia.tech/api/tempo_real/')
-      // fetch('http://127.0.0.1:8000/api/tempo_real/')
-      .then(response =>{
-        if (response.status !== 200) throw new Error('Dados não encontrados')
-        return response.json()
-      })
-      .then(data =>{
-        updateData(data)
-      })
-      .catch(e => console.log(e))
+      fetch(urlRealTime)
+        // fetch('http://127.0.0.1:8000/api/tempo_real/')
+        .then(response => {
+          if (response.status !== 200) throw new Error('Dados não encontrados')
+          return response.json()
+        })
+        .then(data => {
+          updateData(data)
+        })
+        .catch(e => console.log(e))
     }, 1000);
   </script>
 </section>
