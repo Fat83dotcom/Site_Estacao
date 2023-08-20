@@ -204,3 +204,15 @@ class Queries(DateManager):
 
     def queryMean3LastDays(self) -> tuple:
         pass
+
+    def queryLastDailyEntry(self) -> tuple:
+        tableName = self.systemFormatDateToday()
+        sql = f'''
+        SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."{tableName}"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."{tableName}".codigo_gerenciador
+        ORDER BY "tabelas_horarias"."{tableName}".codigo DESC LIMIT 1
+        '''
+        data = ()
+        return sql, data
