@@ -36,6 +36,10 @@ class DateManager:
         queryDate = date(yearYesterday, monthYesterday, dayYesterday)
         return queryDate
 
+    def systemFormatDateToday(self) -> str:
+        dateToday = datetime.now(timezone('America/Sao_Paulo'))
+        return dateToday.strftime('%d-%m-%Y')
+
 
 class Queries(DateManager):
     def queryDateYesterday(self) -> tuple:
