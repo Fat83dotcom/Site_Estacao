@@ -43,7 +43,7 @@ class DateManager:
     def systemFormatDateYesterday(self) -> str:
         dateToday = datetime.now(timezone('America/Sao_Paulo'))
         dateYesterday = dateToday - timedelta(1)
-        return dateYesterday
+        return dateYesterday.strftime('%d-%m-%Y')
 
 
 class Queries(DateManager):
@@ -232,7 +232,7 @@ class Queries(DateManager):
         "tabelas_horarias"."{tableNameToday}".codigo_gerenciador
         WHERE data_hora <= clock_timestamp()
             AND EXTRACT(SECOND FROM data_hora) = 0
-            AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+            AND (EXTRACT(MINUTE FROM data_hora) %% 5 = 0)
         UNION
         SELECT * FROM gerenciador_tabelas_horarias
         INNER JOIN "tabelas_horarias"."{tableNameYesterday}"
@@ -240,7 +240,7 @@ class Queries(DateManager):
         "tabelas_horarias"."{tableNameYesterday}".codigo_gerenciador
         WHERE data_hora >= (clock_timestamp() - INTERVAL '27 hours')
             AND EXTRACT(SECOND FROM data_hora) = 0
-            AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+            AND (EXTRACT(MINUTE FROM data_hora) %% 5 = 0)
         ORDER BY data_hora;
         '''
         data = ()
