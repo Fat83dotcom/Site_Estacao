@@ -37,7 +37,7 @@ def last24HoursEntry(request):
     sql, data = q.queryLast24Hours()
     result = [
         {
-            'data_hora': str(i.data_hora.strftime("%d/%m/%Y %H:%M:%S")),
+            'data_hora': str(i.data_hora.strftime("%d/%m %H:%M")),
             'umidade': float(i.umidade),
             'pressao': float(i.pressao),
             'temp_int': float(i.temp_int),
