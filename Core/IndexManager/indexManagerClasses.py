@@ -7,9 +7,7 @@ class IndexEstatisticsManager(Queries):
     def extractYears(self) -> list:
         sql, data = self.queryExtractYearsFromTable()
         result = DadoDiario.objects.raw(sql, data)
-        year: list = []
-        for i in result:
-            year.append(str(i.ano))
+        year: list = [str(y.ano) for y in result]
         return year
 
     def templateData(self, year) -> dict:
