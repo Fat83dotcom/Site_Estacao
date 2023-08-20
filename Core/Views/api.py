@@ -5,7 +5,7 @@ from Core.Queries.queriesClasses import Queries
 from rest_framework import serializers
 
 
-class LastDailyEntrySerializer(serializers.Serializer):
+class DailyEntrySerializer(serializers.Serializer):
     data_hora = serializers.DateField()
     umidade = serializers.FloatField()
     pressao = serializers.FloatField()
