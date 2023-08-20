@@ -6,6 +6,7 @@
 </section>
 <section class="text-center">
   <h3>Tempo Real</h3>
+  <p id="dateNow"></p>
 </section>
 <section>
   <div id="carouselIndex" class="carousel slide" data-bs-ride="carousel">
@@ -21,7 +22,10 @@
         <div class="d-flex justify-content-center align-items-center">
           <div style="height: 100px; width: 90%;"
             class="container-fluid text-center m-2 conteiner-index align-items-center">
-            Umidade
+            <h4>Umidade: </h4>
+            <div>
+              <p id="umi" style="display: inline";></p><p style="display: inline";> %</p>
+            </div>
           </div>
         </div>
       </div>
@@ -29,7 +33,10 @@
         <div class="d-flex justify-content-center align-items-center">
           <div style="height: 100px; width: 90%;"
             class="container-fluid text-center m-2 conteiner-index align-items-center">
-            Pressão
+            <h4>Pressão</h4>
+            <div>
+              <p id="press" style="display: inline";></p><p style="display: inline";> hPa</p>
+            </div>
           </div>
         </div>
       </div>
@@ -37,7 +44,10 @@
         <div class="d-flex justify-content-center align-items-center">
           <div style="height: 100px; width: 90%;"
             class="container-fluid text-center m-2 conteiner-index align-items-center">
-            Temperatura Interna
+            <h4>Temperatura Interna: </h4>
+            <div>
+              <p id="tmp1" style="display: inline";></p><p style="display: inline";> °C</p>
+            </div>
           </div>
         </div>
       </div>
@@ -45,7 +55,10 @@
         <div class="x d-flex justify-content-center align-items-cent">
           <div style="height: 100px; width: 90%;"
             class="container-fluid text-center m-2 conteiner-index align-items-center">
-            Temperatura Externa
+            <h4>Temperatura Externa: </h4>
+            <div class="flex-row">
+              <p id="tmp2" style="display: inline";></p><p style="display: inline";> °C</p>
+            </div>
           </div>
         </div>
       </div>
