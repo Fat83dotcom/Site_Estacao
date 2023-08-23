@@ -1,8 +1,10 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from Core.models import GerenciadorTabelasHorarias
-from Core.Queries.queriesClasses import Queries
+import locale
 from rest_framework import serializers
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from Core.Queries.queriesClasses import Queries
+from Core.models import GerenciadorTabelasHorarias
+locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 
 class DailyEntrySerializer(serializers.Serializer):
@@ -19,7 +21,9 @@ def lastDailyEntry(request):
     sql, data = q.queryLastDailyEntry()
     result = [
         {
-            'data_hora': str(i.data_hora.strftime("%d/%m/%Y %H:%M:%S")),
+            'data_hora': str(
+                i.data_hora.strftime("%A, %d/%m/%Y %H:%M:%S").title()
+            ),
             'umidade': float(i.umidade),
             'pressao': float(i.pressao),
             'temp_int': float(i.temp_int),
