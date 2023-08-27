@@ -359,11 +359,12 @@
       chartTemp2.update()
     }
 
-    const urlGraf = 'https://www.brainstormtecnologia.tech/api/graficosIndex/'
-    const urlLocal = 'http://127.0.0.1:8000/api/graficosIndex/'
-    fetch(urlGraf)
+    const fetchEngineCharts = (url) =>{
+      fetch(url)
       .then(response => {
-        if (response.status !== 200) throw new Error('Dados não encontrados')
+        if (response.status !== 200) throw new Error(
+          'Dados não encontrados: ' + response.statusText
+        )
         return response.json()
       })
       .then(data => {
@@ -382,29 +383,13 @@
         updateCharts(labelss, humidity, pressure, tempIn, tempEx)
       })
       .catch(e => console.log(e))
+    }
 
+    const urlGraf = 'https://www.brainstormtecnologia.tech/api/graficosIndex/'
+    const urlLocal = 'http://127.0.0.1:8000/api/graficosIndex/'
+    fetchEngineCharts(urlGraf)
     setInterval(() => {
-      fetch(urlGraf)
-        .then(response => {
-          if (response.status !== 200) throw new Error('Dados não encontrados')
-          return response.json()
-        })
-        .then(data => {
-          let labelss = []
-          let humidity = []
-          let pressure = []
-          let tempIn = []
-          let tempEx = []
-          data.forEach(element => {
-            labelss.push(element.data_hora)
-            humidity.push(element.umidade)
-            pressure.push(element.pressao)
-            tempIn.push(element.temp_int)
-            tempEx.push(element.temp_ext)
-          })
-          updateCharts(labelss, humidity, pressure, tempIn, tempEx)
-        })
-        .catch(e => console.log(e))
+      fetchEngineCharts(urlGraf)
     }, 300000);
   </script>
   <script>
@@ -424,14 +409,14 @@
     }
     setInterval(() => {
       fetch(urlRealTime)
-        .then(response => {
-          if (response.status !== 200) throw new Error('Dados não encontrados')
-          return response.json()
-        })
-        .then(data => {
-          updateData(data)
-        })
-        .catch(e => console.log(e))
+      .then(response => {
+        if (response.status !== 200) throw new Error('Dados não encontrados')
+        return response.json()
+      })
+      .then(data => {
+        updateData(data)
+      })
+      .catch(e => console.log(e))
     }, 1000);
   </script>
 </section>
