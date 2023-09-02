@@ -38,8 +38,9 @@ class TablesView(Queries):
                 return (self.template_error, {
                     'alert': 'Talves você esqueceu as datas ...'}
                 )
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, viewBdType)
-            result = DadoDiario.objects.raw(sql, data)
+            result = GenericViews.queryGenericViews(
+                viewBdType, dateStart, dateEnd
+            )
             self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
             self.checkDict['press'] = 1 if 'check-press' in recept else 0
             self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
