@@ -102,19 +102,17 @@ class ManagerGraphs(Queries):
         except Exception as e:
             raise e
 
-    def labelGraph(self, dateStart: str, dateEnd: str) -> list:
+    def buildLabelGraph(self, dateStart: str, dateEnd: str) -> list:
         label: list = []
-        sql, data = self.queryFilterDateRange(
-            dateStart,
-            dateEnd,
-            ordering='ASC')
-        result = DadoDiario.objects.raw(sql, data)
+        result = DateLabel.objects.filter(
+            dia__range=(dateStart, dateEnd)
+        ).order_by('dia')
         for i in result:
             date = self.formatDate('%d/%m/%Y', i.dia)
             label.append(date)
         return label
 
-    def builderDataSet(
+    def buildDataSet(
         self, startDate, endDate, request, physQuantity
     ) -> list:
         dataSets: list = []
