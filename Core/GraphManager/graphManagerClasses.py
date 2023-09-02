@@ -92,10 +92,9 @@ class ManagerGraphs(Queries):
     ) -> list:
         try:
             extractData: list = []
-            sql, data = self.queryFilterColumnByDate(
-                dateStart, dateEnd, viewBdType, collumnBd, ordering='ASC'
+            result = GenericViews.queryGenericViews(
+                viewBdType, dateStart, dateEnd
             )
-            result = DadoDiario.objects.raw(sql, data)
             for i in result:
                 collumnValue = getattr(i, collumnBd)
                 extractData.append(collumnValue)
