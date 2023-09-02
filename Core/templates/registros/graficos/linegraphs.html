@@ -4,33 +4,34 @@
     {%include 'partials/sidebarmenugraphsfull.html'%}
     <div id="page-content-wrapper">
         <div class="conteiner-fluid text-center">
-            <h3>{{graphType}}</h3><h3>{{graphTitle}}</h3>
+            <h3>{{graphType}}</h3>
+            <h3>{{graphTitle}}</h3>
+            <h5>Use o filtro para buscar informações detalhadas no menu Filtro ao lado !</h5>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js"></script>
+
             <div>
                 <canvas id="graphLine"></canvas>
             </div>
-
-            <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.3/dist/chart.umd.min.js"></script>
-
 
             <script>
                 const ctx = document.getElementById('graphLine');
                 let config = {
                     type: 'line',
                     data: {
-                        labels:{{labels|safe}},
-                        datasets: {{dataSets|safe}}
+                        labels: {{ labels| safe}},
+                datasets: { { dataSets | safe } }
                     },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
                                 ticks: {
-                                    callback: value => `${value} {{unity|safe}}`
-                                }
+                                callback: value => `${value} {{unity|safe}}`
                             }
                         }
                     }
+                }
                 };
 
                 new Chart(ctx, config);
