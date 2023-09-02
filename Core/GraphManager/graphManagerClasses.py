@@ -39,32 +39,32 @@ class ManagerGraphs(Queries):
     }
     collumnBdRelation = {
         'Umidade': {
-            'medias': 'media_umidade',
-            'maximas': 'maximo_umidade',
-            'minimas': 'minimo_umidade',
-            'medianas': 'mediana_umidade',
-            'modas': 'moda_umidade'
+            'medias': 'umidade',
+            'maximas': 'umidade',
+            'minimas': 'umidade',
+            'medianas': 'umidade',
+            'modas': 'umidade'
         },
         'Pressao': {
-            'medias': 'media_pressao',
-            'maximas': 'maximo_pressao',
-            'minimas': 'minimo_pressao',
-            'medianas': 'mediana_pressao',
-            'modas': 'moda_pressao'
+            'medias': 'pressao',
+            'maximas': 'pressao',
+            'minimas': 'pressao',
+            'medianas': 'pressao',
+            'modas': 'pressao'
         },
         'Temperatura-Interna': {
-            'medias': 'media_temp_int',
-            'maximas': 'maximo_temp_int',
-            'minimas': 'minimo_temp_int',
-            'medianas': 'mediana_temp_int',
-            'modas': 'moda_temp_int'
+            'medias': 'temp_int',
+            'maximas': 'temp_int',
+            'minimas': 'temp_int',
+            'medianas': 'temp_int',
+            'modas': 'temp_int'
         },
         'Temperatura-Externa': {
-            'medias': 'media_temp_ext',
-            'maximas': 'maximo_temp_ext',
-            'minimas': 'minimo_temp_ext',
-            'medianas': 'mediana_temp_ext',
-            'modas': 'moda_temp_ext'
+            'medias': 'temp_ext',
+            'maximas': 'temp_ext',
+            'minimas': 'temp_ext',
+            'medianas': 'temp_ext',
+            'modas': 'temp_ext'
         },
     }
     meassures = ['medias', 'maximas', 'minimas', 'medianas', 'modas']
