@@ -51,4 +51,94 @@ class GerenciadorTabelasHorarias(models.Model):
 
 
 class DateLabel(models.Model):
-    pass
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+
+    class Meta:
+        managed = False
+        db_table = 'label_datas'
+
+
+class TotalMeans(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'medias_totais'
+
+
+class TotalMax(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'maximas_totais'
+
+
+class TotalMin(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'minimas_totais'
+
+
+class TotalMedian(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'medianas_totais'
+
+
+class TotalMode(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'modas_totais'
+
+
+class GenericViews(models.Model):
+    codigo = models.BigIntegerField(primary_key=True)
+    dia = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    @classmethod
+    def queryGenericViews(cls, viewBDType: str, dateStart: str, dateEnd: str):
+        sql = f'''SELECT * FROM {viewBDType}
+            WHERE dia BETWEEN '{dateStart}' AND '{dateEnd}'
+            ORDER BY dia ASC'''
+        return cls.objects.raw(sql)
+
+    class Meta:
+        managed = False
+        db_table = 'genericviews'
