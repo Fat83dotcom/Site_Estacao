@@ -3,7 +3,8 @@ from Core.Queries.queriesClasses import Queries
 from Core.GraphManager.graphManagerClasses import GraphsView
 from Core.IndexManager.indexManagerClasses import IndexEstatisticsManager
 from django.shortcuts import render
-from Core.models import DadoDiario, Pictures
+from Core.models import DadoDiario, Pictures, TotalMeans, TotalMax
+from Core.models import TotalMedian, TotalMode, TotalMin, GenericViews
 from django.core.paginator import Paginator
 
 
