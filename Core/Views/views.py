@@ -70,12 +70,13 @@ class PagesTableMeanView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMeans.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'medias')
+        template, context = self.tablePost(request, 'medias_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -92,12 +93,13 @@ class PagesTablesMaxView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMax.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'maximas')
+        template, context = self.tablePost(request, 'maximas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -114,12 +116,13 @@ class PagesTablesMinView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMin.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'minimas')
+        template, context = self.tablePost(request, 'minimas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -136,12 +139,13 @@ class PagesTablesMedianView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMedian.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'medianas')
+        template, context = self.tablePost(request, 'medianas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -158,12 +162,13 @@ class PagesTablesModeView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMode.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'modas')
+        template, context = self.tablePost(request, 'modas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -249,8 +254,10 @@ class PageMainRegisters(View, Queries):
 
     def get(self, request):
         try:
-            query, data = self.queryDateYesterday()
-            dateToday = DadoDiario.objects.raw(query, data)
+            yesterdarDate = self._dateYesterday()
+            dateToday = DadoDiario.objects.filter(
+                dia=yesterdarDate
+            )
             context = {
                 'dateToday': dateToday,
             }
