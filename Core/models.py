@@ -3,7 +3,7 @@ from django.db import models
 
 class DadoDiario(models.Model):
     codigo = models.AutoField(primary_key=True)
-    dia = models.DateTimeField(unique=True)
+    dia = models.DateField(unique=True)
     media_umidade = models.FloatField()
     minimo_umidade = models.FloatField()
     maximo_umidade = models.FloatField()
