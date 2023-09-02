@@ -1,5 +1,5 @@
 from pytz import timezone
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 
 class DateManager:
@@ -19,10 +19,7 @@ class DateManager:
         dateYesterday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
         ) - timedelta(1)
-        dayYesterday: int = int(dateYesterday.strftime('%d'))
-        monthYesterday: int = int(dateYesterday.strftime('%m'))
-        yearYesterday: int = int(dateYesterday.strftime('%Y'))
-        queryDate = date(yearYesterday, monthYesterday, dayYesterday)
+        queryDate = dateYesterday.strftime('%Y-%m-%d')
         return queryDate
 
     def _retroactiveDate(self, numberDaysTurnBack: int):
@@ -30,10 +27,7 @@ class DateManager:
         dateYesterday = datetime.strptime(
             dateToday, '%Y-%m-%d %H:%M:%S.%f%z'
         ) - timedelta(numberDaysTurnBack)
-        dayYesterday: int = int(dateYesterday.strftime('%d'))
-        monthYesterday: int = int(dateYesterday.strftime('%m'))
-        yearYesterday: int = int(dateYesterday.strftime('%Y'))
-        queryDate = date(yearYesterday, monthYesterday, dayYesterday)
+        queryDate = dateYesterday.strftime('%Y-%m-%d')
         return queryDate
 
     def systemFormatDateToday(self) -> str:
