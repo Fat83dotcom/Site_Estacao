@@ -41,55 +41,6 @@ class DateManager:
 
 
 class Queries(DateManager):
-    def queryDateYesterday(self) -> tuple:
-        sql = 'SELECT * FROM dado_diario WHERE dia=%s'
-        data: tuple = (f"{self._dateYesterday()} 00:00:00", )
-        return (sql, data)
-
-    def queryMinData(self) -> tuple:
-        sql = 'SELECT * FROM minimas_totais'
-        data: tuple = ()
-        return (sql, data)
-
-    def queryMaxData(self) -> tuple:
-        sql = 'SELECT * FROM maximas_totais'
-        data: tuple = ()
-        return (sql, data)
-
-    def queryMeanData(self) -> tuple:
-        sql = 'SELECT * FROM medias_totais'
-        data: tuple = ()
-        return (sql, data)
-
-    def queryMedianData(self) -> tuple:
-        sql = 'SELECT * FROM medianas_totais'
-        data: tuple = ()
-        return (sql, data)
-
-    def queryModeData(self) -> tuple:
-        sql = 'SELECT * FROM modas_totais'
-        data: tuple = ()
-        return (sql, data)
-
-    def queryFilterByDate(
-        self, dateStart: str, dateEnd: str, viewBdType: str
-    ) -> tuple:
-        sql = f'SELECT * FROM {viewBdType}_totais WHERE dia BETWEEN %s AND %s'
-        data: tuple = (dateStart, dateEnd)
-        return (sql, data)
-
-    def queryFilterColumnByDate(
-        self, dateStart: str,
-        dateEnd: str,
-        viewBdType: str,
-        collumn: str,
-        ordering='DESC'
-    ) -> tuple:
-        sql = f'SELECT codigo, {collumn} ' \
-            f'FROM {viewBdType} WHERE dia BETWEEN %s AND %s' \
-            f' ORDER BY dia {ordering}'
-        data: tuple = (dateStart, dateEnd)
-        return (sql, data)
 
     def queryFilterMaxByCurrentYear(
         self, collumn: str, ordering='DESC'
