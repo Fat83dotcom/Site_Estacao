@@ -134,8 +134,8 @@ class GraphsView(ManagerGraphs):
     def graphGet(self, graphName: str, numberDaysTurnBack: int):
         startDate = self._retroactiveDate(numberDaysTurnBack)
         endDate = self._retroactiveDate(1)
-        labels: list = self.labelGraph(startDate, endDate)
-        dataSets: list = self.builderDataSet(
+        labels: list = self.buildLabelGraph(startDate, endDate)
+        dataSets: list = self.buildDataSet(
             startDate, endDate, self.dataReqGet, self.physQuantityGet
         )
         graphType = f'Gráfico de {graphName} - ' + \
@@ -163,10 +163,10 @@ class GraphsView(ManagerGraphs):
                 return self.template_error, {
                     'alert': 'Marque um sensor ...'
                 }
-            dataSets: list = self.builderDataSet(
+            dataSets: list = self.buildDataSet(
                 dateStart, dateEnd, dataReq, physQuantity
             )
-            labels: list = self.labelGraph(dateStart, dateEnd)
+            labels: list = self.buildLabelGraph(dateStart, dateEnd)
             graphTitle = f'De {dateStart} até {dateEnd} : ' \
                 f'{physQuantity} {self.colors[physQuantity]["unity"]}'
             context = {
