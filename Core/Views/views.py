@@ -11,10 +11,9 @@ from django.core.paginator import Paginator
 class TablesView(Queries):
     template_error = 'notfound/404.html'
 
-    def tableGet(self, request, numberPager: int):
+    def tableGet(self, request, numberPager: int, query):
         try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
+            result = query
             paginator = Paginator(result, numberPager)
             pageNumber = request.GET.get("page")
             pageObj = paginator.get_page(pageNumber)
