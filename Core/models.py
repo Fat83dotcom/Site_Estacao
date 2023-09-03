@@ -164,7 +164,7 @@ class GenericViews(models.Model):
 
     @classmethod
     def queryGenericViews(cls, viewBDType: str, dateStart: str, dateEnd: str):
-        sql = f'''SELECT * FROM {viewBDType}
+        sql = f'''SELECT * FROM genericviews('{viewBDType}')
             WHERE dia BETWEEN '{dateStart}' AND '{dateEnd}'
             ORDER BY dia ASC'''
         return cls.objects.raw(sql)
