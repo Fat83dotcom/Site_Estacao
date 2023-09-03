@@ -1,11 +1,11 @@
 from django.views import View
+from django.shortcuts import render
+from django.core.paginator import Paginator
 from Core.Queries.queriesClasses import Queries
 from Core.GraphManager.graphManagerClasses import GraphsView
-from Core.IndexManager.indexManagerClasses import IndexEstatisticsManager
-from django.shortcuts import render
 from Core.models import DadoDiario, Pictures, TotalMeans, TotalMax
 from Core.models import TotalMedian, TotalMode, TotalMin, GenericViews
-from django.core.paginator import Paginator
+from Core.IndexManager.indexManagerClasses import IndexEstatisticsManager
 
 
 class TablesView(Queries):
