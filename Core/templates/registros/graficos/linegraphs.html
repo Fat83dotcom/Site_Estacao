@@ -19,10 +19,10 @@
                 let config = {
                     type: 'line',
                     data: {
-                        labels: {{ labels| safe}},
-                datasets: { { dataSets | safe } }
+                        labels: {{labels|safe}},
+                        datasets: {{dataSets|safe}}
                     },
-                options: {
+                    options: {
                     scales: {
                         y: {
                             beginAtZero: true,
