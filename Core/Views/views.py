@@ -1,19 +1,19 @@
 from django.views import View
+from django.shortcuts import render
+from django.core.paginator import Paginator
 from Core.Queries.queriesClasses import Queries
 from Core.GraphManager.graphManagerClasses import GraphsView
+from Core.models import DadoDiario, Pictures, TotalMeans, TotalMax
+from Core.models import TotalMedian, TotalMode, TotalMin, GenericViews
 from Core.IndexManager.indexManagerClasses import IndexEstatisticsManager
-from django.shortcuts import render
-from Core.models import DadoDiario, Pictures
-from django.core.paginator import Paginator
 
 
 class TablesView(Queries):
     template_error = 'notfound/404.html'
 
-    def tableGet(self, request, numberPager: int):
+    def tableGet(self, request, numberPager: int, query):
         try:
-            sql, data = self.queryMeanData()
-            result = DadoDiario.objects.raw(sql, data)
+            result = query
             paginator = Paginator(result, numberPager)
             pageNumber = request.GET.get("page")
             pageObj = paginator.get_page(pageNumber)
@@ -38,8 +38,9 @@ class TablesView(Queries):
                 return (self.template_error, {
                     'alert': 'Talves você esqueceu as datas ...'}
                 )
-            sql, data = self.queryFilterByDate(dateStart, dateEnd, viewBdType)
-            result = DadoDiario.objects.raw(sql, data)
+            result = GenericViews.queryGenericViews(
+                viewBdType, dateStart, dateEnd
+            )
             self.checkDict['umi'] = 1 if 'check-umi' in recept else 0
             self.checkDict['press'] = 1 if 'check-press' in recept else 0
             self.checkDict['t1'] = 1 if 'check-t1' in recept else 0
@@ -69,12 +70,13 @@ class PagesTableMeanView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMeans.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'medias')
+        template, context = self.tablePost(request, 'medias_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -91,12 +93,13 @@ class PagesTablesMaxView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMax.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'maximas')
+        template, context = self.tablePost(request, 'maximas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -113,12 +116,13 @@ class PagesTablesMinView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMin.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'minimas')
+        template, context = self.tablePost(request, 'minimas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -135,12 +139,13 @@ class PagesTablesMedianView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMedian.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'medianas')
+        template, context = self.tablePost(request, 'medianas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -157,12 +162,13 @@ class PagesTablesModeView(View, TablesView):
     }
 
     def get(self, request):
-        template, context = self.tableGet(request, 30)
+        result = TotalMode.objects.all().order_by('-codigo')
+        template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
     def post(self, request):
-        template, context = self.tablePost(request, 'modas')
+        template, context = self.tablePost(request, 'modas_totais')
         context.update({'pageName': self.pageName})
         return render(request, template, context)
 
@@ -248,8 +254,10 @@ class PageMainRegisters(View, Queries):
 
     def get(self, request):
         try:
-            query, data = self.queryDateYesterday()
-            dateToday = DadoDiario.objects.raw(query, data)
+            yesterdarDate = self._dateYesterday()
+            dateToday = DadoDiario.objects.filter(
+                dia=yesterdarDate
+            )
             context = {
                 'dateToday': dateToday,
             }

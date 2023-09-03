@@ -30,16 +30,16 @@
                     <tr>
                         <td>{{data.dia|date}}</td>
                         {% if pUmi%}
-                            <td>{{data.maximo_umidade}}</td>
+                            <td>{{data.umidade}}</td>
                         {% endif %}
                         {% if pPress%}
-                            <td>{{data.maximo_pressao}}</td>
+                            <td>{{data.pressao}}</td>
                         {% endif %}
                         {% if pT1%}
-                            <td>{{data.maximo_temp_int}}</td>
+                            <td>{{data.temp_int}}</td>
                         {% endif %}
                         {% if pT2%}
-                            <td>{{data.maximo_temp_ext}}</td>
+                            <td>{{data.temp_ext}}</td>
                         {% endif %}
                     </tr>
                     {% endfor %}

@@ -1,4 +1,4 @@
-from Core.models import DadoDiario
+from Core.models import DateLabel, GenericViews
 from Core.Queries.queriesClasses import Queries
 
 
@@ -39,32 +39,32 @@ class ManagerGraphs(Queries):
     }
     collumnBdRelation = {
         'Umidade': {
-            'medias': 'media_umidade',
-            'maximas': 'maximo_umidade',
-            'minimas': 'minimo_umidade',
-            'medianas': 'mediana_umidade',
-            'modas': 'moda_umidade'
+            'medias': 'umidade',
+            'maximas': 'umidade',
+            'minimas': 'umidade',
+            'medianas': 'umidade',
+            'modas': 'umidade'
         },
         'Pressao': {
-            'medias': 'media_pressao',
-            'maximas': 'maximo_pressao',
-            'minimas': 'minimo_pressao',
-            'medianas': 'mediana_pressao',
-            'modas': 'moda_pressao'
+            'medias': 'pressao',
+            'maximas': 'pressao',
+            'minimas': 'pressao',
+            'medianas': 'pressao',
+            'modas': 'pressao'
         },
         'Temperatura-Interna': {
-            'medias': 'media_temp_int',
-            'maximas': 'maximo_temp_int',
-            'minimas': 'minimo_temp_int',
-            'medianas': 'mediana_temp_int',
-            'modas': 'moda_temp_int'
+            'medias': 'temp_int',
+            'maximas': 'temp_int',
+            'minimas': 'temp_int',
+            'medianas': 'temp_int',
+            'modas': 'temp_int'
         },
         'Temperatura-Externa': {
-            'medias': 'media_temp_ext',
-            'maximas': 'maximo_temp_ext',
-            'minimas': 'minimo_temp_ext',
-            'medianas': 'mediana_temp_ext',
-            'modas': 'moda_temp_ext'
+            'medias': 'temp_ext',
+            'maximas': 'temp_ext',
+            'minimas': 'temp_ext',
+            'medianas': 'temp_ext',
+            'modas': 'temp_ext'
         },
     }
     meassures = ['medias', 'maximas', 'minimas', 'medianas', 'modas']
@@ -92,10 +92,9 @@ class ManagerGraphs(Queries):
     ) -> list:
         try:
             extractData: list = []
-            sql, data = self.queryFilterColumnByDate(
-                dateStart, dateEnd, viewBdType, collumnBd, ordering='ASC'
+            result = GenericViews.queryGenericViews(
+                viewBdType, dateStart, dateEnd
             )
-            result = DadoDiario.objects.raw(sql, data)
             for i in result:
                 collumnValue = getattr(i, collumnBd)
                 extractData.append(collumnValue)
@@ -103,19 +102,17 @@ class ManagerGraphs(Queries):
         except Exception as e:
             raise e
 
-    def labelGraph(self, dateStart: str, dateEnd: str) -> list:
+    def buildLabelGraph(self, dateStart: str, dateEnd: str) -> list:
         label: list = []
-        sql, data = self.queryFilterDateRange(
-            dateStart,
-            dateEnd,
-            ordering='ASC')
-        result = DadoDiario.objects.raw(sql, data)
+        result = DateLabel.objects.filter(
+            dia__range=(dateStart, dateEnd)
+        ).order_by('dia')
         for i in result:
             date = self.formatDate('%d/%m/%Y', i.dia)
             label.append(date)
         return label
 
-    def builderDataSet(
+    def buildDataSet(
         self, startDate, endDate, request, physQuantity
     ) -> list:
         dataSets: list = []
@@ -137,8 +134,8 @@ class GraphsView(ManagerGraphs):
     def graphGet(self, graphName: str, numberDaysTurnBack: int):
         startDate = self._retroactiveDate(numberDaysTurnBack)
         endDate = self._retroactiveDate(1)
-        labels: list = self.labelGraph(startDate, endDate)
-        dataSets: list = self.builderDataSet(
+        labels: list = self.buildLabelGraph(startDate, endDate)
+        dataSets: list = self.buildDataSet(
             startDate, endDate, self.dataReqGet, self.physQuantityGet
         )
         graphType = f'Gráfico de {graphName} - ' + \
@@ -166,10 +163,10 @@ class GraphsView(ManagerGraphs):
                 return self.template_error, {
                     'alert': 'Marque um sensor ...'
                 }
-            dataSets: list = self.builderDataSet(
+            dataSets: list = self.buildDataSet(
                 dateStart, dateEnd, dataReq, physQuantity
             )
-            labels: list = self.labelGraph(dateStart, dateEnd)
+            labels: list = self.buildLabelGraph(dateStart, dateEnd)
             graphTitle = f'De {dateStart} até {dateEnd} : ' \
                 f'{physQuantity} {self.colors[physQuantity]["unity"]}'
             context = {

@@ -5,62 +5,57 @@ from Core.GraphManager.graphManagerClasses import ManagerGraphs
 
 class IndexEstatisticsManager(Queries):
     def extractYears(self) -> list:
-        sql, data = self.queryExtractYearsFromTable()
-        result = DadoDiario.objects.raw(sql, data)
-        year: list = [str(y.ano) for y in result]
+        result = DadoDiario.extractYear()
+        year: list = [str(y.get('year', 0)) for y in result]
         return year
 
     def templateData(self, year) -> dict:
         try:
-            sql, data = self.queryFilterMeassureByYear(
+            resultMaxTemp = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'maximo_temp_ext',
                 'MAX',
                 'DESC'
             )
-            resultMaxTemp = DadoDiario.objects.raw(sql, data)
-
-            sql, data = self.queryFilterMeassureByYear(
+            resultMinTemp = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'minimo_temp_ext',
                 'MIN',
                 'DESC'
             )
-            resultMinTemp = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeanByYear(year, 'media_temp_ext')
-            resultMeanTemp = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeassureByYear(
+            resultMeanTemp = DadoDiario.queryFilterMeanByYear(
+                year, 'media_temp_ext'
+            )
+            resultMaxUmi = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'maximo_umidade',
                 'MAX',
                 'DESC'
             )
-            resultMaxUmi = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeassureByYear(
+            resultMinUmi = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'minimo_umidade',
                 'MIN',
                 'DESC'
             )
-            resultMinUmi = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeanByYear(year, 'media_umidade')
-            resultMeanUmi = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeassureByYear(
+            resultMeanUmi = DadoDiario.queryFilterMeanByYear(
+                year, 'media_umidade'
+            )
+            resultMaxPress = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'maximo_pressao',
                 'MAX',
                 'ASC'
             )
-            resultMaxPress = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeassureByYear(
+            resultMinPress = DadoDiario.queryFilterMeassureByYear(
                 year,
                 'minimo_pressao',
                 'MIN',
                 'DESC'
             )
-            resultMinPress = DadoDiario.objects.raw(sql, data)
-            sql, data = self.queryFilterMeanByYear(year, 'media_pressao')
-            resultMeanPress = DadoDiario.objects.raw(sql, data)
+            resultMeanPress = DadoDiario.queryFilterMeanByYear(
+                year, 'media_pressao'
+            )
             result = {
                 'year': year,
                 'resultMaxTemp': resultMaxTemp,
