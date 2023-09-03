@@ -2,8 +2,8 @@ import locale
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from Core.Queries.queriesClasses import Queries
-from Core.models import GerenciadorTabelasHorarias
+from Core.models import DataFromTabelasHorarias
+from Core.Queries.queriesClasses import DateManager
 locale.setlocale(locale.LC_TIME, 'pt_BR.utf8')
 
 
@@ -17,8 +17,8 @@ class DailyEntrySerializer(serializers.Serializer):
 
 @api_view()
 def lastDailyEntry(request):
-    q = Queries()
-    sql, data = q.queryLastDailyEntry()
+    dt = DateManager()
+    tableName = dt.systemFormatDateToday()
     result = [
         {
             'data_hora': str(
@@ -29,7 +29,7 @@ def lastDailyEntry(request):
             'temp_int': float(i.temp_int),
             'temp_ext': float(i.temp_ext)
         }
-        for i in GerenciadorTabelasHorarias.objects.raw(sql, data)
+        for i in DataFromTabelasHorarias.getLastEntry(tableName)
     ]
     serializer = DailyEntrySerializer(instance=result[0])
     return Response(serializer.data)
@@ -37,8 +37,9 @@ def lastDailyEntry(request):
 
 @api_view()
 def last24HoursEntry(request):
-    q = Queries()
-    sql, data = q.queryLast24Hours()
+    dt = DateManager()
+    tableNameToday = dt.systemFormatDateToday()
+    tableNameYesterday = dt.systemFormatDateYesterday()
     result = [
         {
             'data_hora': str(i.data_hora.strftime("%d/%m %H:%M")),
@@ -47,7 +48,9 @@ def last24HoursEntry(request):
             'temp_int': float(i.temp_int),
             'temp_ext': float(i.temp_ext)
         }
-        for i in GerenciadorTabelasHorarias.objects.raw(sql, data)
+        for i in DataFromTabelasHorarias.getLast24Hours(
+            tableNameToday, tableNameYesterday
+        )
     ]
     serializer = DailyEntrySerializer(instance=result, many=True)
     return Response(serializer.data)
