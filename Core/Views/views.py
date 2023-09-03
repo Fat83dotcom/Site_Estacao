@@ -70,7 +70,7 @@ class PagesTableMeanView(View, TablesView):
     }
 
     def get(self, request):
-        result = TotalMeans.objects.all().order_by('-codigo')
+        result = TotalMeans.objects.all().order_by('-dia')
         template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
@@ -93,7 +93,7 @@ class PagesTablesMaxView(View, TablesView):
     }
 
     def get(self, request):
-        result = TotalMax.objects.all().order_by('-codigo')
+        result = TotalMax.objects.all().filter().order_by('-dia')
         template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
@@ -116,7 +116,7 @@ class PagesTablesMinView(View, TablesView):
     }
 
     def get(self, request):
-        result = TotalMin.objects.all().order_by('-codigo')
+        result = TotalMin.objects.all().order_by('-dia')
         template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
@@ -139,7 +139,7 @@ class PagesTablesMedianView(View, TablesView):
     }
 
     def get(self, request):
-        result = TotalMedian.objects.all().order_by('-codigo')
+        result = TotalMedian.objects.all().order_by('-dia')
         template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
@@ -162,7 +162,7 @@ class PagesTablesModeView(View, TablesView):
     }
 
     def get(self, request):
-        result = TotalMode.objects.all().order_by('-codigo')
+        result = TotalMode.objects.all().order_by('-dia')
         template, context = self.tableGet(request, 30, result)
         context.update({'pageName': self.pageName})
         return render(request, template, context)
