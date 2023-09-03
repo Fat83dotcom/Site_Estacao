@@ -172,3 +172,35 @@ class GenericViews(models.Model):
     class Meta:
         managed = False
         db_table = 'genericviews'
+
+
+class DataFromTabelasHorarias(models.Model):
+    '''Função PostgreSQL'''
+    codigo = models.IntegerField(primary_key=True)
+    data_hora = models.DateField()
+    umidade = models.FloatField()
+    pressao = models.FloatField()
+    temp_int = models.FloatField()
+    temp_ext = models.FloatField()
+
+    class Meta:
+        managed = False
+        db_table = 'get_last_24_hours'
+
+    @classmethod
+    def getLast24Hours(cls, tableNToday: str, tableNYesterday: str):
+        sql = f'''SELECT codigo, data_hora, umidade,
+            pressao, temp_int, temp_ext
+            FROM get_last_24_hours('{tableNToday}', '{tableNYesterday}')'''
+        return cls.objects.raw(sql)
+
+    @classmethod
+    def getLastEntry(cls, tableName: str) -> tuple:
+        sql = f'''
+        SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."{tableName}"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."{tableName}".codigo_gerenciador
+        ORDER BY "tabelas_horarias"."{tableName}".codigo DESC LIMIT 1
+        '''
+        return cls.objects.raw(sql)
