@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.functions import ExtractYear
 
 
 class DadoDiario(models.Model):
@@ -31,6 +32,28 @@ class DadoDiario(models.Model):
 
     def __str__(self):
         return f'{self.dia}'
+
+    @classmethod
+    def extractYear(cls):
+        return cls.objects.annotate(
+            year=ExtractYear('dia')
+        ).values('year').distinct()
+
+    @classmethod
+    def queryFilterMeanByYear(cls, year: str, collumn: str):
+        sql = f'''SELECT 1 AS codigo, AVG({collumn}) FROM
+        dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))={year}'''
+        return cls.objects.raw(sql)
+
+    @classmethod
+    def queryFilterMeassureByYear(
+        cls, year: str, collumn: str, funcSQL: str, ordering: str
+    ):
+        sql = f'''SELECT codigo, dia, {collumn} FROM dado_diario
+            WHERE {collumn}=(SELECT {funcSQL}({collumn})
+            FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))={year}) AND
+            EXTRACT(YEAR FROM(SELECT dia))={year} ORDER BY dia {ordering}'''
+        return cls.objects.raw(sql)
 
 
 class Pictures(models.Model):
