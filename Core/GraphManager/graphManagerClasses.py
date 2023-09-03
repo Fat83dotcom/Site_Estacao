@@ -1,4 +1,4 @@
-from Core.models import DadoDiario, DateLabel, GenericViews
+from Core.models import DateLabel, GenericViews
 from Core.Queries.queriesClasses import Queries
 
 
