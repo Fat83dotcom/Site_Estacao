@@ -74,6 +74,7 @@ class GerenciadorTabelasHorarias(models.Model):
 
 
 class DateLabel(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
 
@@ -83,6 +84,7 @@ class DateLabel(models.Model):
 
 
 class TotalMeans(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
@@ -96,6 +98,7 @@ class TotalMeans(models.Model):
 
 
 class TotalMax(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
@@ -109,6 +112,7 @@ class TotalMax(models.Model):
 
 
 class TotalMin(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
@@ -122,6 +126,7 @@ class TotalMin(models.Model):
 
 
 class TotalMedian(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
@@ -135,6 +140,7 @@ class TotalMedian(models.Model):
 
 
 class TotalMode(models.Model):
+    '''View PostgrSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
@@ -148,6 +154,7 @@ class TotalMode(models.Model):
 
 
 class GenericViews(models.Model):
+    '''Função PostgreSQL'''
     codigo = models.BigIntegerField(primary_key=True)
     dia = models.DateField()
     umidade = models.FloatField()
