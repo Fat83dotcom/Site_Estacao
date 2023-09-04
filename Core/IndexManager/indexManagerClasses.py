@@ -1,9 +1,8 @@
 from Core.models import DadoDiario
-from Core.Queries.queriesClasses import Queries
 from Core.GraphManager.graphManagerClasses import ManagerGraphs
 
 
-class IndexEstatisticsManager(Queries):
+class IndexEstatisticsManager:
     def extractYears(self) -> list:
         result = DadoDiario.extractYear()
         year: list = [str(y.get('year', 0)) for y in result]
