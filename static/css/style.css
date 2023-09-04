@@ -1,6 +1,8 @@
 :root{
-    --icon-color: rgb(31, 81, 65);
-    --bg-header-color: darkcyan;
+    --boxes-shadow: rgba(12, 90, 232, 0.3);
+    --icon-color: rgb(12, 90, 232);
+    --bg-header-color: rgb(12, 155, 242);
+    --boxes-color: rgb(90, 206, 234);
     --transition-icons: all 1s ease-in-out;
     --hover-color: rgba(0, 0, 0, 0.8);
 }
@@ -36,7 +38,7 @@ nav a{
 }
 .header-list a:hover{
     color: var(--transition-icons);
-    background-color: aquamarine;
+    background-color: var(--boxes-color);
     border-radius: 10px;
     padding: 5px;
     cursor: pointer;
@@ -89,13 +91,13 @@ nav a{
     list-style: none;
 }
 .conteiner-index{
-    background-color: aquamarine;
-    box-shadow: 1px 1px 1px rgba(31, 81, 65, 0.3);
+    background-color: var(--boxes-color);
+    box-shadow: 1px 1px 1px var(--boxes-shadow);
     border-radius: 5px;
     transition: all 500ms ease-in-out;
 }
-.row div:hover{
-    box-shadow: -1px -1px 1px rgba(31, 81, 65, 0.3);
+.rower div:hover{
+    box-shadow: -1px -1px 1px var(--boxes-shadow);
     transform: scale(1.05);
 }
 .table-dark{
@@ -104,4 +106,13 @@ nav a{
 }
 .about-section a{
     color: var(--icon-color);
+}
+.graph-index{
+    background-color: var(--boxes-color);
+    box-shadow: 1px 1px 1px var(--boxes-shadow);
+    border-radius: 5px;
+    transition: all 500ms ease-in-out;
+}
+.rower-graph div:hover{
+    box-shadow: -1px -1px 1px var(--boxes-shadow);
 }
