@@ -82,25 +82,25 @@
 </section>
 <section>
   <div class="container-fluid text-center">
-    <div class="row">
-      <div class="col m-2 conteiner-index">
+    <div class="row rower-graph">
+      <div class="col m-2 graph-index">
 
         <canvas id="graphLineUmidade"></canvas>
 
       </div>
-      <div class="col m-2 conteiner-index">
+      <div class="col m-2 graph-index">
 
         <canvas id="graphLinePressao"></canvas>
 
       </div>
     </div>
-    <div class="row">
-      <div class="col m-2 conteiner-index">
+    <div class="row rower-graph">
+      <div class="col m-2 graph-index">
 
         <canvas id="graphLineTempInt"></canvas>
 
       </div>
-      <div class="col m-2 conteiner-index">
+      <div class="col m-2 graph-index">
 
         <canvas id="graphLineTempExt"></canvas>
 
@@ -124,7 +124,7 @@
           {% for i in data %}
           {% if extractYear == i.year%}
           <div class="container-fluid text-center">
-            <div class="row">
+            <div class="row rower">
               <div class="col m-2 conteiner-index">
                 {% for data in i.resultMaxTemp %}
                 {% if forloop.counter0 == 0%}
@@ -152,7 +152,7 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="row">
+            <div class="row rower">
               <div class="col m-2 conteiner-index">
                 {% for data in i.resultMaxUmi %}
                 {% if forloop.counter0 == 0%}
@@ -180,7 +180,7 @@
                 {% endfor %}
               </div>
             </div>
-            <div class="row">
+            <div class="row rower">
               <div class="col m-2 conteiner-index">
                 {% for data in i.resultMaxPress %}
                 {% if forloop.counter0 == 0%}
@@ -232,7 +232,7 @@
           fill: 'origin',
           pointRadius: 1,
           cubicInterpolationMode: 'monotone',
-
+          backgroundColor: 'rgba(153, 102, 255, 0.6)',
         }]
       },
 
@@ -261,6 +261,7 @@
           fill: 'origin',
           pointRadius: 1,
           cubicInterpolationMode: 'monotone',
+          backgroundColor: 'rgba(12, 90, 232, 0.6)',
         }]
       },
 
@@ -289,6 +290,7 @@
           fill: 'origin',
           pointRadius: 1,
           cubicInterpolationMode: 'monotone',
+          backgroundColor: 'rgba(31, 81, 65, 0.6)',
         }]
       },
 
@@ -317,6 +319,7 @@
           fill: 'origin',
           pointRadius: 1,
           cubicInterpolationMode: 'monotone',
+          backgroundColor: 'rgba(255, 99, 132, 0.6)',
         }]
       },
 
