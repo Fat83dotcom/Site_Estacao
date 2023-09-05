@@ -30,11 +30,13 @@ class DateManager:
         queryDate = dateYesterday.strftime('%Y-%m-%d')
         return queryDate
 
-    def systemFormatDateToday(self) -> str:
+    @classmethod
+    def systemFormatDateToday(cls) -> str:
         dateToday = datetime.now(timezone('America/Sao_Paulo'))
         return dateToday.strftime('%d-%m-%Y')
 
-    def systemFormatDateYesterday(self) -> str:
+    @classmethod
+    def systemFormatDateYesterday(cls) -> str:
         dateToday = datetime.now(timezone('America/Sao_Paulo'))
         dateYesterday = dateToday - timedelta(1)
         return dateYesterday.strftime('%d-%m-%Y')
