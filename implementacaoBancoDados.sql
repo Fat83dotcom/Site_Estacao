@@ -1,4 +1,4 @@
--- Active: 1686355749375@@129.148.57.149@5432
+-- Active: 1693166653609@@127.0.0.1@5432@dados_estacao
 
 -- ********************** Implementações Obrigatórias - Modelo Físico **********************
 
@@ -17,14 +17,33 @@ create schema tabelas_horarias;
 
 select codigo from dado_diario order by codigo desc limit 1;
 
-CREATE TABLE IF NOT EXISTS "tabelas_horarias"."dd-mm-aaaa" 
-    (codigo serial not null primary key,
-    data_hora timestamp not null unique,
-    umidade double precision null,
-    pressao double precision null,
-    temp_int double precision null,
-    temp_ext double precision null
-	);
+CREATE TABLE IF NOT EXISTS "schema"."tableName"
+	(codigo serial not null PRIMARY KEY,
+	data_hora timestamp not null UNIQUE,
+	codigo_gerenciador bigint default {},
+	umidade double precision null,
+	pressao double precision null,
+	temp_int double precision null,
+	temp_ext double precision null,
+	FOREIGN KEY (codigo_gerenciador)
+	REFERENCES gerenciador_tabelas_horarias (codigo)
+	ON DELETE CASCADE);
+
+CREATE OR REPLACE FUNCTION drop_tables_except_one() RETURNS void AS $$
+	#variable_conflict use_column
+	DECLARE
+		table_name text;
+	BEGIN
+		FOR table_name IN (SELECT table_name FROM information_schema.tables 
+						WHERE table_schema = 'tabelas_horarias' AND table_name NOT IN ('29-08-2023', '30-08-2023')) LOOP
+			EXECUTE 'DROP TABLE IF EXISTS tabelas_horarias."' || table_name || '" CASCADE';
+		END LOOP;
+	END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- SELECT drop_tables_except_one();
 
 -- ********************** Schema public **********************
 
@@ -59,17 +78,6 @@ CREATE TABLE gerenciador_tabelas_horarias(
 	data_tabela DATE NOT NULL UNIQUE
 );
 
-CREATE OR REPLACE VIEW MEDIAS_DIARIAS 
-	as
-	select
-	    dia,
-	    media_umidade,
-	    media_pressao,
-	    media_temp_int,
-	    media_temp_ext
-	from dado_diario
-; 
-
 CREATE OR REPLACE VIEW MEDIAS_MIN_MAX_TEMP 
 	as
 	select
@@ -81,17 +89,28 @@ CREATE OR REPLACE VIEW MEDIAS_MIN_MAX_TEMP
 	    minimo_temp_ext,
 	    maximo_temp_ext
 	from
-DADO_DIARIO; 
+	DADO_DIARIO; 
+
+CREATE OR REPLACE VIEW MEDIAS_DIARIAS 
+	as
+	select
+	    dia,
+	    media_umidade AS umidade,
+	    media_pressao AS pressao,
+	    media_temp_int AS temp_int,
+	    media_temp_ext AS temp_ext
+	from dado_diario
+; 
 
 CREATE OR REPLACE VIEW MINIMAS_TOTAIS 
 	as
 	select
 	    codigo,
 	    dia,
-	    minimo_umidade,
-	    minimo_pressao,
-	    minimo_temp_int,
-	    minimo_temp_ext
+	    minimo_umidade AS umidade,
+	    minimo_pressao AS pressao,
+	    minimo_temp_int AS temp_int,
+	    minimo_temp_ext AS temp_ext
 	from dado_diario
 	order by dia
 DESC; 
@@ -100,10 +119,10 @@ CREATE OR REPLACE VIEW MAXIMAS_TOTAIS as
 	select
 	    codigo,
 	    dia,
-	    maximo_umidade,
-	    maximo_pressao,
-	    maximo_temp_int,
-	    maximo_temp_ext
+	    maximo_umidade AS umidade,
+	    maximo_pressao AS pressao,
+	    maximo_temp_int AS temp_int,
+	    maximo_temp_ext AS temp_ext
 	from dado_diario
 	order by dia
 DESC; 
@@ -113,10 +132,10 @@ CREATE OR REPLACE VIEW MEDIANAS_TOTAIS
 	select
 	    codigo,
 	    dia,
-	    mediana_umidade,
-	    mediana_pressao,
-	    mediana_temp_int,
-	    mediana_temp_ext
+	    mediana_umidade AS umidade,
+	    mediana_pressao AS pressao,
+	    mediana_temp_int AS temp_int,
+	    mediana_temp_ext AS temp_ext
 	from dado_diario
 	order by dia
 DESC; 
@@ -126,10 +145,10 @@ CREATE OR REPLACE VIEW MODAS_TOTAIS
 	select
 	    codigo,
 	    dia,
-	    moda_umidade,
-	    moda_pressao,
-	    moda_temp_int,
-	    moda_temp_ext
+	    moda_umidade AS umidade,
+	    moda_pressao AS pressao,
+	    moda_temp_int AS temp_int,
+	    moda_temp_ext AS temp_ext
 	from dado_diario
 	order by dia
 DESC; 
@@ -139,10 +158,10 @@ CREATE OR REPLACE VIEW MEDIAS_TOTAIS
 	select
 	    codigo,
 	    dia,
-	    media_umidade,
-	    media_pressao,
-	    media_temp_int,
-	    media_temp_ext
+	    media_umidade AS umidade,
+	    media_pressao AS pressao,
+	    media_temp_int AS temp_int,
+	    media_temp_ext AS temp_ext
 	from dado_diario
 	order by dia
 DESC; 
@@ -150,6 +169,65 @@ DESC;
 CREATE OR REPLACE VIEW label_datas AS
 SELECT codigo, dia FROM dado_diario
 ORDER BY dia DESC;
+
+CREATE OR REPLACE FUNCTION genericviews(view_name text)
+RETURNS TABLE (
+	codigo int,
+	dia timestamp,
+	umidade double precision,
+	pressao double precision,
+	temp_int double precision,
+	temp_ext double precision)
+AS $$
+BEGIN
+    RETURN QUERY EXECUTE 'SELECT * FROM ' || view_name;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_last_24_hours(table_name_today text, table_name_yesterday text)
+RETURNS TABLE(
+	codigo1 int,
+	data_tabela date,
+	codigo int,
+	data_hora timestamp,
+	codigo_gerenciador bigint,
+	umidade double precision,
+	pressao double precision,
+	temp_int double precision,
+	temp_ext double precision)
+	AS $$
+BEGIN
+	RETURN QUERY EXECUTE 
+	'SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."'||table_name_today||'"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."'||table_name_today||'".codigo_gerenciador
+        WHERE data_hora <= clock_timestamp()
+            AND EXTRACT(SECOND FROM data_hora) = 0
+            AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+        UNION
+        SELECT * FROM gerenciador_tabelas_horarias
+        INNER JOIN "tabelas_horarias"."'||table_name_yesterday||'"
+        ON gerenciador_tabelas_horarias.codigo=
+        "tabelas_horarias"."'||table_name_yesterday||'".codigo_gerenciador
+        WHERE data_hora >= (clock_timestamp() - INTERVAL ''27 hours'')
+			AND EXTRACT(SECOND FROM data_hora) = 0
+			AND (EXTRACT(MINUTE FROM data_hora) % 5 = 0)
+	ORDER BY data_hora';
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- ********************** Testes Abaixo **********************
+
+select codigo, data_hora, umidade, pressao, temp_int, temp_ext
+from get_last_24_hours('03-09-2023', '02-09-2023');
+
+select * from genericViews('maximas_totais') where dia between '01-08-2023' and '03-08-2023' order by dia
+
+SELECT * FROM label_datas WHERE dia BETWEEN '08-08-2023' AND '29-08-2023' ORDER BY dia;
+
+select * from dado_diario where dia='01-09-2023';
 
 SELECT dia, maximo_umidade FROM dado_diario
 WHERE maximo_umidade = (SELECT MAX(maximo_umidade) FROM dado_diario)
@@ -200,8 +278,6 @@ SELECT DISTINCT EXTRACT(YEAR FROM dia) as ano FROM dado_diario;
 SELECT 0 AS id, AVG(maximo_umidade) FROM
 dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))='2023';
 
--- ********************** Testes Abaixo **********************
-
 select * from maximas_totais;
 
 -- drop view medias_totais;
@@ -239,7 +315,7 @@ create table teste(
 	nome varchar null
 );
 
-select * from tabelas_horarias."17-07-2023";
+select * from tabelas_horarias."01-04-2023";
 
 drop schema dado_horario
 
@@ -258,16 +334,17 @@ CREATE TABLE IF NOT EXISTS "tabelas_horarias"."15-07-2023"(
 
 select * from dado_diario where codigo='1212';
 
-select * from gerenciador_tabelas_horarias
-
 select codigo, data_hora, temp_ext from "tabelas_horarias"."25-07-2023" 
 where temp_ext=(select max(temp_ext) from "tabelas_horarias"."25-07-2023");
 
-select * from "tabelas_horarias"."26-07-2023" order by codigo desc;
+select * from "tabelas_horarias"."16-10-2022" order by codigo desc;
 
 
 select count(*) from "tabelas_horarias"."25-07-2023";
 
+drop table gerenciador_tabelas_horarias cascade;
+
+select * from gerenciador_tabelas_horarias;
 
 select * from "tabelas_horarias"."27-07-2023"
 where data_hora between '2023-07-27 23:00:00' and '2023-07-27 23:59:59'
