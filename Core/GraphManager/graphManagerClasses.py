@@ -91,39 +91,36 @@ class ManagerGraphs(Queries):
         collumnBd: str
     ) -> list:
         try:
-            extractData: list = []
-            result = GenericViews.queryGenericViews(
-                viewBdType, dateStart, dateEnd
-            )
-            for i in result:
-                collumnValue = getattr(i, collumnBd)
-                extractData.append(collumnValue)
+            extractData: list = [
+                getattr(i, collumnBd)
+                for i in GenericViews.queryGenericViews(
+                    viewBdType, dateStart, dateEnd
+                )
+            ]
             return extractData
         except Exception as e:
             raise e
 
     def buildLabelGraph(self, dateStart: str, dateEnd: str) -> list:
-        label: list = []
-        result = DateLabel.objects.filter(
-            dia__range=(dateStart, dateEnd)
-        ).order_by('dia')
-        for i in result:
-            date = self.formatDate('%d/%m/%Y', i.dia)
-            label.append(date)
+        label: list = [
+            self.formatDate('%d/%m/%Y', i.dia)
+            for i in DateLabel.objects.filter(
+                dia__range=(dateStart, dateEnd)
+            ).order_by('dia')
+        ]
         return label
 
     def buildDataSet(
         self, startDate, endDate, request, physQuantity
     ) -> list:
-        dataSets: list = []
-        for i in self.meassures:
-            if i in request:
-                collumnBd = self.collumnBdRelation[physQuantity][i]
-                data = self.dataGraph(
-                    startDate, endDate, f'{i}_totais', collumnBd
+        dataSets: list = [
+            self.graph(physQuantity, i, self.dataGraph(
+                    startDate, endDate, f'{i}_totais',
+                    self.collumnBdRelation[physQuantity][i]
                 )
-                dTS = self.graph(physQuantity, i, data)
-                dataSets.append(dTS)
+            )
+            for i in self.meassures if i in request
+        ]
         return dataSets
 
 
@@ -163,10 +160,10 @@ class GraphsView(ManagerGraphs):
                 return self.template_error, {
                     'alert': 'Marque um sensor ...'
                 }
+            labels: list = self.buildLabelGraph(dateStart, dateEnd)
             dataSets: list = self.buildDataSet(
                 dateStart, dateEnd, dataReq, physQuantity
             )
-            labels: list = self.buildLabelGraph(dateStart, dateEnd)
             graphTitle = f'De {dateStart} até {dateEnd} : ' \
                 f'{physQuantity} {self.colors[physQuantity]["unity"]}'
             context = {
