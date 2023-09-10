@@ -13,7 +13,7 @@ const updateData = data => {
     temp2.textContent = JSON.stringify(data.temp_ext)
 }
 setInterval(() => {
-    fetch(urlLocalTime)
+    fetch(urlRealTime)
     .then(response => {
         if (response.status !== 200) throw new Error('Dados não encontrados')
         return response.json()
