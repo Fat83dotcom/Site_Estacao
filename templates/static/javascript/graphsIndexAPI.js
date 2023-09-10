@@ -284,7 +284,7 @@ const ctx1 = document.getElementById('graphLineUmidade');
 
     const urlGraf = 'https://www.brainstormtecnologia.tech/api/graficosIndex/'
     const urlLocal = 'http://127.0.0.1:8000/api/graficosIndex/'
-    fetchEngineCharts(urlLocal)
+    fetchEngineCharts(urlGraf)
     setInterval(() => {
-      fetchEngineCharts(urlLocal)
+      fetchEngineCharts(urlGraf)
     }, 300000);
