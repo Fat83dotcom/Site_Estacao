@@ -1,3 +1,8 @@
+/*  Desenvolvido por: BrainStorm Tecnologia 
+    Desenvolvedor: Fernando Mendes
+    todos os direitos reservados 2023 © BrainStorm Tecnologia
+*/
+
 const ctx1 = document.getElementById('graphLineUmidade');
     let config1 = {
       type: 'line',

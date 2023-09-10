@@ -1,3 +1,8 @@
+/*  Desenvolvido por: BrainStorm Tecnologia 
+    Desenvolvedor: Fernando Mendes
+    todos os direitos reservados 2023 © BrainStorm Tecnologia
+*/
+
 const urlRealTime = 'https://www.brainstormtecnologia.tech/api/tempo_real/'
 const urlLocalTime = 'http://127.0.0.1:8000/api/tempo_real/'
 const date = document.getElementById('dateNow')
