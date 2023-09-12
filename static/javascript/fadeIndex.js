@@ -1,3 +1,8 @@
+/*  Desenvolvido por: BrainStorm Tecnologia 
+    Desenvolvedor: Fernando Mendes
+    todos os direitos reservados 2023 © BrainStorm Tecnologia
+*/
+
 window.addEventListener('load', () =>{
     let contentA = document.getElementById('fade-info-A')
     let contentB = document.getElementById('fade-info-B')

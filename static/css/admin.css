@@ -1,7 +1,8 @@
-/*
-ALTERAR:var(--icon-color) -> Cor do topo
-ALTERAR: ef5455 -> Cor dos links e cabeçalhos
+/*  Desenvolvido por: BrainStorm Tecnologia 
+    Desenvolvedor: Fernando Mendes
+    todos os direitos reservados 2023 © BrainStorm Tecnologia
 */
+
 :root{
     --icon-color: rgb(31, 81, 65);
     --bg-header-color: darkcyan;
