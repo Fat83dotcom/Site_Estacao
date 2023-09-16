@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.functions import ExtractYear
+from utils.images import resizeImage
 
 
 class DadoDiario(models.Model):
@@ -54,6 +55,25 @@ class DadoDiario(models.Model):
             FROM dado_diario WHERE EXTRACT(YEAR FROM(SELECT dia))={year}) AND
             EXTRACT(YEAR FROM(SELECT dia))={year} ORDER BY dia {ordering}'''
         return cls.objects.raw(sql)
+
+
+class FavPicture(models.Model):
+    name = models.CharField(max_length=20, default='pic')
+    favIcon = models.ImageField(upload_to='favIcon', blank=True, null=True)
+
+    def save(self, *args, **kwargs) -> None:
+        currentFaviconName = str(self.name)
+        super().save(*args, **kwargs)
+        favIconChanged = currentFaviconName = False
+
+        if self.favIcon:
+            favIconChanged = currentFaviconName != self.name
+
+        if favIconChanged:
+            resizeImage(self.favIcon, 32)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Pictures(models.Model):
