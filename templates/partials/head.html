@@ -24,5 +24,8 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=64fe2139ab24060019dda158&product=sticky-share-buttons&source=platform" async="async"></script>
+    {% if favicon_32.favIcon %}
+        <link rel="shortcut icon" href="{{ favicon_32.favIcon.url }}" type="image/png">
+    {% endif %}
     <title>Estação - {{pageName}}</title>
 </head>
