@@ -219,6 +219,7 @@ class PageIndexView(View, IndexEstatisticsManager):
     def get(self, request):
         try:
             years = self.extractYears()
+            years.reverse()
             context = {
                 'years': years,
                 'data': []
