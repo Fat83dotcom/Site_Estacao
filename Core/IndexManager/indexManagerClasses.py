@@ -5,7 +5,7 @@ from Core.GraphManager.graphManagerClasses import ManagerGraphs
 class IndexEstatisticsManager:
     def extractYears(self) -> list:
         result = DadoDiario.extractYear()
-        year: list = [str(y.get('year', 0)) for y in result]
+        year: list = [int(y.get('year', 0)) for y in result]
         return year
 
     def templateData(self, year) -> dict:
