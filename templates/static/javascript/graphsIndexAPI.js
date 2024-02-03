@@ -120,45 +120,41 @@ let config4 = {
 let chartTemp2 = new Chart(ctx4, config4);
 
 const max = array => {
+  result = new Object()
   if (array.length === 0) {
-    max.dateIndex = undefined
-    max.value = undefined
-    return max
+    result.dateIndex = undefined
+    result.value = undefined
+    return result
   }
-  let max = new Object()
-  max.value = 0
-  for (let index = 0; index < array.length; index++) {
-    if (max.value === 0) {
-      max.dateIndex = index
-      max.value = array[index]
+  result.value = array[0]
+  array.forEach(
+    (element, index) => {
+      if (element > result.value) {
+        result.value = element
+        result.dateIndex = index
+      }
     }
-    if (array[index] > max.value) {
-      max.dateIndex = index
-      max.value = array[index]
-    }
-  }
-  return max
+  )
+  return result
 }
 
 const min = array => {
+  result = new Object()
   if (array.length === 0) {
-    min.dateIndex = undefined
-    min.value = undefined
-    return min
+    result.dateIndex = undefined
+    result.value = undefined
+    return result
   }
-  let min = new Object()
-  min.value = 0
-  for (let index = 0; index < array.length; index++) {
-    if (min.value === 0) {
-      min.dateIndex = index
-      min.value = array[index]
+  result.value = array[0]
+  array.forEach(
+    (element, index) => {
+      if (element < result.value) {
+        result.value = element
+        result.dateIndex = index
+      }
     }
-    if (array[index] < min.value) {
-      min.dateIndex = index
-      min.value = array[index]
-    }
-  }
-  return min
+  )
+  return result
 }
 
 const mean = array => {
