@@ -1,6 +1,6 @@
 /*  Desenvolvido por: BrainStorm Tecnologia 
     Desenvolvedor: Fernando Mendes
-    todos os direitos reservados 2023 © BrainStorm Tecnologia
+    todos os direitos reservados 2024 © BrainStorm Tecnologia
 */
 
 const urlRealTime = 'https://www.brainstormtecnologia.tech/api/tempo_real/'
@@ -19,12 +19,12 @@ const updateData = data => {
 }
 setInterval(() => {
     fetch(urlRealTime)
-    .then(response => {
-        if (response.status !== 200) throw new Error('Dados não encontrados')
-        return response.json()
-    })
-    .then(data => {
-        updateData(data)
-    })
-    .catch(e => console.log(e))
+        .then(response => {
+            if (response.status !== 200) throw new Error('Dados não encontrados')
+            return response.json()
+        })
+        .then(data => {
+            updateData(data)
+        })
+        .catch(e => console.log(e))
 }, 1000);

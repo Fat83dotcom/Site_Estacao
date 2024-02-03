@@ -125,3 +125,6 @@ nav a{
     opacity: 0;
     transition: opacity 1s;
 }
+.font-header{
+    font-size: 18px;
+}
